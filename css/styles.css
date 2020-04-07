@@ -1,0 +1,183 @@
+/* Headings */
+.page-header{
+    font-size: 9em;
+    font-weight: 900;
+    font-variant: small-caps;
+    text-align: center;
+}
+.sub-head{
+    font-weight: 500;
+    text-align: center;
+    font-size: 3em;
+}
+.display-2{
+    font-weight: 800;
+    font-size: 5em;
+    font-variant: small-caps;
+    text-align: center;
+}
+.demo-screen{
+    transform:scale(0.9);
+    
+}
+.section-header{
+    font-size: 5em;
+    text-align: center;
+    font-weight: normal;
+}
+.stat-header{
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 1.8em;
+
+}
+/*Form Stuff*/
+label{
+    font-size: 1.5em !important;
+   }
+   .invalid-feedback{
+    font-size: 1.1em;
+    font-weight: bold;
+    display: inline;
+}
+.valid-feedback{
+    font-size: 1.1em;
+    font-weight: bold;
+    display: inline;
+}
+/* Image Stuff */
+.display-1{
+    font-size: 8em;
+    font-variant: small-caps;
+}
+.profile-img{
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.30), 0 8px 22px 0 rgba(0, 0, 0, 0.30);
+    max-width: 150px;
+}
+.square-pfp{
+    border-radius: none;
+}
+.squarer-pfp{
+    border-radius: 1em;
+}
+.circle-pfp{
+    border-radius: 100%;
+}
+.modal-footer{
+    padding-bottom: 0rem;
+}
+.modal-title{
+    font-size: 2em;
+}
+.pdata{
+    font-size: 1.6em;
+    line-height: 35px;
+}
+.pdata strong{
+    font-weight: bold;
+}
+body{
+    background-color:white;
+}
+.panel__top {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    position: initial;
+    justify-content: center;
+    justify-content: space-between;
+  }
+  .panel__basic-actions {
+    position: initial;
+  }
+
+  .editor-load:hover{
+      cursor: pointer;
+      background-color: rgba(0, 123, 255, 0.514);
+
+  }
+.stat-card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.form-control{
+    font-size: 1.3em;
+}
+.stat-value{
+    font-size: 5em;
+    font-weight: normal;
+    text-align: center;
+    color: white;
+    margin: auto;
+}
+.stat-value-sub{
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    margin: auto;
+}
+  /* Reset some default styling */
+
+.jumbotron{
+    background-color:red;
+    color:black;
+    width: 100%;
+    border: 2px solid black;
+    /* -moz-border-radius: 10px; */
+    /* border-radius: 10px; */
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.list{
+    color: black;
+    font-size: 1.3em;
+}
+hgroup h2{
+    color: black;
+}
+.navbar-brand{
+    color: white;
+}
+/* Adds borders for tabs */
+
+
+.page-header {
+    text-align: center;
+}
+
+
+
+.paragraph{
+    font-size: 1.3em;
+}
+.about{
+    max-width: 300px;
+}
+
+
+.card{
+    margin-bottom: 8px;
+    margin-right: 8px;
+    margin-left: 8px;
+    border: none;
+}
+.form-check-input{
+    width: 30px; 
+    height: 30px;
+}
+body {
+    /* background-color: #DC3545; */
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.app {
+    flex: 1 0 auto;
+}
+
+
+
