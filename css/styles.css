@@ -1,183 +1,110 @@
-/* Headings */
-.page-header{
-    font-size: 9em;
+.container-fluid > h1{
+    text-align: center;
+}
+.container-fluid .content-box{
+    width: 100%;
+    color: black;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding:2em;
+    border-radius: 6px;
+    width: 100%;
+    margin: 7px 0px;
+}
+.content-box .heading, .content-box h1{
+    color: black;
     font-weight: 900;
-    font-variant: small-caps;
+    font-size: 3.5em;
+    font-family: 'Bangers';
+    letter-spacing: 3px;
+    margin-bottom: 0.5em;
     text-align: center;
-}
-.sub-head{
-    font-weight: 500;
-    text-align: center;
-    font-size: 3em;
-}
-.display-2{
-    font-weight: 800;
-    font-size: 5em;
-    font-variant: small-caps;
-    text-align: center;
-}
-.demo-screen{
-    transform:scale(0.9);
-    
-}
-.section-header{
-    font-size: 5em;
-    text-align: center;
-    font-weight: normal;
-}
-.stat-header{
     text-transform: uppercase;
-    text-align: center;
-    font-weight: bolder;
-    font-size: 1.8em;
-
 }
-/*Form Stuff*/
-label{
-    font-size: 1.5em !important;
-   }
-   .invalid-feedback{
+.content-box .subheading,.content-box h2{
+    color: black;
+    font-weight: normal;
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+.modal-title{
+    color: black;
+    font-weight: 900;
+    font-size: 2em;
+    font-family: 'Bangers';
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.container-fluid{
+    max-width: 1200px;
+}
+.content-box .paragraph, .content-paragraph,.content-box label,.content-box p,.form-group label{
+    color: rgb(78, 78, 78);
+    font-size: 1.4em;
+    line-height: 33px;
+}
+.content-box .paragraph strong, .content-paragraph,.content-box label strong,.content-box p strong{
+    font-weight: 600;
+}
+.form-control.form-control-alternative{
+    color: black;
+    font-size: 1.3em;
+}
+.form-control.form-control-alternative:focus{
+    color: black;
+}
+.form-control.form-control-alternative::placeholder{
+  color: rgba(95, 95, 95, 0.699);
+  font-style: italic;
+}
+.invalid-feedback{
     font-size: 1.1em;
     font-weight: bold;
-    display: inline;
 }
 .valid-feedback{
     font-size: 1.1em;
     font-weight: bold;
-    display: inline;
 }
-/* Image Stuff */
-.display-1{
-    font-size: 8em;
-    font-variant: small-caps;
+.navbar{
+    background-color: #E15B14;
+    color: white;
+    padding-top: .4rem;
+    padding-right: 1rem;
+    padding-bottom: .4rem;
+    padding-left: 1rem;
 }
-.profile-img{
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.30), 0 8px 22px 0 rgba(0, 0, 0, 0.30);
-    max-width: 150px;
-}
-.square-pfp{
-    border-radius: none;
-}
-.squarer-pfp{
-    border-radius: 1em;
-}
-.circle-pfp{
-    border-radius: 100%;
-}
-.modal-footer{
-    padding-bottom: 0rem;
-}
-.modal-title{
-    font-size: 2em;
-}
-.pdata{
-    font-size: 1.6em;
-    line-height: 35px;
-}
-.pdata strong{
+.navbar-nav .nav-item .nav-link {
+    font-size: 1.2em;
     font-weight: bold;
+    color: rgba(255,255,255,.75);
 }
-body{
-    background-color:white;
-}
-.panel__top {
-    padding: 0;
-    width: 100%;
-    display: flex;
-    position: initial;
-    justify-content: center;
-    justify-content: space-between;
-  }
-  .panel__basic-actions {
-    position: initial;
-  }
 
-  .editor-load:hover{
-      cursor: pointer;
-      background-color: rgba(0, 123, 255, 0.514);
-
-  }
-.stat-card{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.form-control{
-    font-size: 1.3em;
-}
-.stat-value{
-    font-size: 5em;
-    font-weight: normal;
-    text-align: center;
+.navbar-nav .nav-item .nav-link:hover{
+    font-weight: bold;
     color: white;
-    margin: auto;
-}
-.stat-value-sub{
-    font-size: 2.5em;
-    font-weight: 700;
-    text-align: center;
-    color: white;
-    margin: auto;
-}
-  /* Reset some default styling */
 
-.jumbotron{
-    background-color:red;
-    color:black;
-    width: 100%;
-    border: 2px solid black;
-    /* -moz-border-radius: 10px; */
-    /* border-radius: 10px; */
-    margin-top: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
-.list{
-    color: black;
-    font-size: 1.3em;
-}
-hgroup h2{
-    color: black;
+.navbar-dark .navbar-nav .active>.nav-link, .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .nav-link.show, .navbar-dark .navbar-nav .show>.nav-link {
+color: white;
 }
 .navbar-brand{
+    font-family: 'Bangers';
+    font-size: 1.2em;
+    letter-spacing: 3px;
+}
+.sub-nav,.sub-nav a{
+    text-align: center;
+    font-size: 1.5em;
+    font-family: "Bangers";
+    letter-spacing: 3px;
+    font-style: normal;
+    color: rgba(255,255,255,.65);
+}
+.sub-nav,.sub-nav a.active{
     color: white;
 }
-/* Adds borders for tabs */
-
-
-.page-header {
-    text-align: center;
+.sub-nav a:hover{
+    color: white;
 }
-
-
-
-.paragraph{
-    font-size: 1.3em;
-}
-.about{
-    max-width: 300px;
-}
-
-
-.card{
-    margin-bottom: 8px;
-    margin-right: 8px;
-    margin-left: 8px;
-    border: none;
-}
-.form-check-input{
-    width: 30px; 
-    height: 30px;
-}
-body {
-    /* background-color: #DC3545; */
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-}
-.app {
-    flex: 1 0 auto;
-}
-
-
-
