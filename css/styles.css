@@ -1,3 +1,15 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: white;
+    color: white;
+}
+.app {
+    flex: 1 0 auto;
+}
 .container-fluid > h1{
     text-align: center;
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 require __DIR__ . "/Bramus/Router/Router.php";
-require_once __DIR__ . "/src/libs/SteamID.php";
 require_once __DIR__ . "/src/libs/functions.php";
 
 $router = new \Bramus\Router\Router();
@@ -27,6 +25,9 @@ $router->patch('pattern', function () { /* ... */
 // Errors
 
 $router->set404(function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
@@ -35,6 +36,9 @@ $router->set404(function () {
 });
 //Indexs
 $router->all('/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
@@ -43,24 +47,77 @@ $router->all('/', function () {
 });
 
 $router->all('/index.php', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     $header = "/home";
     include(__DIR__ . '/views/index.php');
 });
+
 $router->all('/home/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     $header = "/home";
     include(__DIR__ . '/views/index.php');
 });
-;
+$router->all('/register/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    $header = "/home";
+    include(__DIR__ . '/views/register.php');
+});
+$router->all('/login/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
 
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    $header = "/home";
+    include(__DIR__ . '/views/login.php');
+});
+$router->all('/logout/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    $header = "/home";
+    include(__DIR__ . '/views/logout.php');
+});
+$router->all('/callback/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    $header = "/home";
+    include(__DIR__ . '/views/g-callback.php');
+});
 
+$router->all('/google-register/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    include(__DIR__ . '/views/g-callback-register.php');
+});
 
 $router->all('/ajax/{ajax}', function ($ajax) {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");

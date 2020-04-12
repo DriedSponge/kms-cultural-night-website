@@ -41,35 +41,28 @@
 
                 <?php
 
-                if (!isset($_SESSION['ID'])) {
+                if (!isset($_SESSION['email'])) {
                 ?>
                     <ul class="navbar-nav  mt-2 mt-lg-0">
                         <li class="nav-item" style="list-style-type:none;">
-                            <a class="nav-link" href="?login">Login</a>
+                            <a class="nav-link" href="/login/">Login</a>
                         </li>
 
                         <li class="nav-item" style="list-style-type:none;">
-                            <a class="nav-link" href="?register">Register</a>
+                            <a class="nav-link" href="/register/">Register</a>
                         </li>
                     </ul>
                 <?php
                 } else {
-                    include('steamauth/userInfo.php'); //To access the $steamprofile array
                 ?>
                     <ul class="navbar-nav  mt-2 mt-lg-0">
                         <li class="nav-item dropdown" style="list-style-type:none;">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" style="color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <?= htmlspecialchars($steamprofile['personaname']); ?>
+                                <?= htmlspecialchars($_SESSION['name']); ?>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="?logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                                <?php
-                                if (isAdmin($_SESSION['steamid'])) {
-                                ?>
-                                    <a class="dropdown-item" href="/manage/"><i class="fas fa-cog"></i></i> Management</a>
-                                <?php
-                                }
-                                ?>
+                                <a class="dropdown-item" href="/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                
                             </div>
                         </li>
                     </ul>
