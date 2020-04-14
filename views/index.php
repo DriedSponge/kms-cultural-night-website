@@ -30,13 +30,7 @@
     <script src="https://unpkg.com/tippy.js@4"></script>
 
 
-    <script>
-       function CopyURL() {
-         var copyText = "test";
-           navigator.clipboard.writeText(copyText);
-         toastr["success"]("The URL has been copied to your clipboard!", "Congratulations!")
-     }
-    </script>
+   
 
 </body>
 
