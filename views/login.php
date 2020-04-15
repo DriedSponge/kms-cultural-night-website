@@ -23,23 +23,9 @@ if(isset($_SESSION['access_token'])){
 
                 <div class="content-box"style="max-width: 400px">
                 <h1>Login</h1>
-                <form>
-                    <div class="form-group">
-                        <input class="form-control form-control-alternative" type="email" placeholder="Email...">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control form-control-alternative" type="password" placeholder="Password...">
-                    </div>
-                    <br>
-                    <div class="text-center" style="justify-content:center">
-                    <div class="form-group">
-                            <button type="submit" class="btn btn-success">Login</button>
-                    </div>
-                    
-                </form>
-                <p>Or</p>
-                <a href="<?=htmlspecialchars($loginURL);?>"><img width="220px" class="img-fluid" src="/img/resources/btn_google_signin_light_normal_web@2x.png"></a>
-
+                <div  class="text-center">
+                    <a href="<?=htmlspecialchars($loginURL);?>"><img width="220px" class="img-fluid" src="<?=htmlspecialchars($dir);?>img/resources/btn_google_signin_dark_pressed_web@2x.png"></a>
+                </div>
                 </div>
                 </div>
                 </div>

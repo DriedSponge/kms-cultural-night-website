@@ -1,47 +1,6 @@
 <?php
 
 /**
- * Check if user is an admin
- *
- * @param int $steamid
- * @return boolean
- */
-function isAdmin($steamid)
-{
-    include("config.php");
-    if ($steamid == $OWNER) {
-        return true;
-    } else {
-        $adms =  json_decode(file_get_contents("data/managers.json"), true);
-        for ($i = 0; $i <= count($adms); $i++) {
-            if (isset($adms[$i]["id64"])) {
-
-
-                if ($adms[$i]["id64"] == $steamid) {
-                    return true;
-                    break;
-                }
-            }
-        }
-    }
-}
-
-
-/**
- * Check if user is an owner
- *
- * @param int $steamid
- * @return boolean
- */
-function isOwner($steamid)
-{
-    include("config.php");
-    if ($steamid == $OWNER) {
-        return true;
-    }
-}
-
-/**
  * Check if string is completly blank
  *
  * @param string $string
@@ -57,33 +16,72 @@ function IsEmpty($string)
 }
 
 /**
- * Generates a users profile url from their steamid64
+ * Get Info About A user From GID
  *
- * @param string $string
- * @return string
+ * @param string $gid
+ * @return array
  */
-function StmURL($id64)
+function UserInfo($gid)
 {
-    $url = "https://steamcommunity.com/profiles/$id64";
-    return  $url;
+    $query = SQLWrapper()->prepare("SELECT * FROM Users WHERE gid = :gid")->execute([":gid" => $gid]);
+    $info = $query->fetch();
+    if (!empty($info)) {
+        $account = array("exist" => true, "Name" => $info['Name'], "CreationDate" => $info['CreationDate'], "Picture" => $info['Picture'], "Bio" => $info['Bio'], "RealName" => $info['RealName'], "ID" => $info['ID']);
+        return $account;
+    } else {
+        $account = array("exist" => false);
+        return $account;
+    }
 }
 /**
- * Gets the username of a steamuser
+ * Check if a user exist in the DB
  *
- * @param string $string
- * @return string
+ * @param string $gid
+ * @return boolean
  */
-function StmName($id64)
+function UserExist($gid)
 {
-    include("config.php");
-    $json = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . $STEAMAPIKEY . "&steamids=$id64");
-    $apidata = json_decode($json);
-    if (isset($apidata->response->players[0]->personaname)) {
-
-
-        $name = $apidata->response->players[0]->personaname;
+    $query = SQLWrapper()->prepare("SELECT ID FROM Users WHERE gid = ?");
+    $query->execute([$gid]);
+    $info =  $query->fetch();
+    if(empty($info)) {
+        return false;
     } else {
-        $name = null;
+        return true;
     }
-    return $name;
 }
+/**
+ * Check if a user is banned
+ *
+ * @param string $gid
+ * @return array
+ */
+function IsBanned($gid)
+{
+    $query = SQLWrapper()->prepare("SELECT * FROM Bans WHERE gid = :gid")->execute([":gid" => $gid]);
+    $info = $query->fetch();
+    if (!empty($info)) {
+        $ban = array("banned" => true, "UserInfo" => $info['UserInfo'], "Date" => $info['Date'], "AdminInfo" => $info['AdminInfo'], "ID" => $info['ID'], "Reason" => $info['Reason']);
+        return $ban;
+    } else {
+        $ban = array("banned" => false);
+        return $ban;
+    }
+}
+/**
+ * Check if a user name is taken
+ *
+ * @param string $username
+ * @return array
+ */
+function UserNameReady($username)
+{
+    $query = SQLWrapper()->prepare("SELECT ID FROM Users WHERE Name = :name")->execute([":name" => $username]);
+    $info = $query->fetch();
+    if (empty($info)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+?>

@@ -1,7 +1,10 @@
 <?php
 
 require __DIR__ . "/Bramus/Router/Router.php";
+require_once __DIR__ . "/databases/connect.php";
 require_once __DIR__ . "/src/libs/functions.php";
+
+
 
 $router = new \Bramus\Router\Router();
 
@@ -121,8 +124,6 @@ $router->all('/ajax/{ajax}', function ($ajax) {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
-    require(__DIR__ . '/steamauth/steamauth.php');
-    include(__DIR__ . '/steamauth/userInfo.php');
     include(__DIR__ . '/views/ajax/' . $ajax);
 });
 $router->run();

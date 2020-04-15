@@ -4,7 +4,7 @@ body {
     flex-direction: column;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background-color: white;
+    background-color: #E15B14;
     color: white;
 }
 .app {
@@ -19,19 +19,18 @@ body {
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding:2em;
-    border-radius: 6px;
+    border-radius: 0px;
     width: 100%;
     margin: 7px 0px;
 }
 .content-box .heading, .content-box h1{
     color: black;
-    font-weight: 900;
-    font-size: 3.5em;
+    font-weight: 500;
+    font-size: 3.8em;
     font-family: 'Roboto';
     letter-spacing: 3px;
     margin-bottom: 0.5em;
     text-align: center;
-    text-transform: uppercase;
 }
 .content-box .subheading,.content-box h2{
     color: black;
@@ -54,7 +53,7 @@ body {
 }
 .content-box .paragraph, .content-paragraph,.content-box label,.content-box p,.form-group label{
     color: rgb(78, 78, 78);
-    font-size: 1.4em;
+    font-size: 1.5em;
     line-height: 33px;
 }
 .content-box .paragraph strong, .content-paragraph,.content-box label strong,.content-box p strong{
@@ -119,4 +118,7 @@ color: white;
 }
 .sub-nav a:hover{
     color: white;
+}
+.round-size-1{
+    max-width: 130px;
 }
