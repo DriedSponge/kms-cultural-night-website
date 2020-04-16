@@ -95,7 +95,7 @@ if ($UserData["verified_email"]) {
                                                     AlertError(data.Msg)
                                                 }else{
                                                     if(data.unameERR){
-                                                        Invalidate("#uname",data.unameERR)
+                                                        InValidate("#uname",data.unameERR)
                                                     }
                                                 }
                                             }

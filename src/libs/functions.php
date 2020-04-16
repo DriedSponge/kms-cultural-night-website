@@ -58,7 +58,8 @@ function UserExist($gid)
  */
 function IsBanned($gid)
 {
-    $query = SQLWrapper()->prepare("SELECT * FROM Bans WHERE gid = :gid")->execute([":gid" => $gid]);
+    $query = SQLWrapper()->prepare("SELECT * FROM Bans WHERE gid = :gid");
+    $query->execute([":gid" => $gid]);
     $info = $query->fetch();
     if (!empty($info)) {
         $ban = array("banned" => true, "UserInfo" => $info['UserInfo'], "Date" => $info['Date'], "AdminInfo" => $info['AdminInfo'], "ID" => $info['ID'], "Reason" => $info['Reason']);
@@ -76,7 +77,8 @@ function IsBanned($gid)
  */
 function UserNameReady($username)
 {
-    $query = SQLWrapper()->prepare("SELECT ID FROM Users WHERE Name = :name")->execute([":name" => $username]);
+    $query = SQLWrapper()->prepare("SELECT ID FROM Users WHERE Name = :name");
+    $query->execute([":name" => $username]);
     $info = $query->fetch();
     if (empty($info)) {
         return true;

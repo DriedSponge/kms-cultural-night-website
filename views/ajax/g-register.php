@@ -10,7 +10,7 @@ if(isset($_POST['register'])){
         if(isset($_SESSION['access_token'])){
             if(!UserExist($_SESSION['gid'])){
                 $banned = IsBanned($_SESSION['gid']);
-                if($banned['banned']==true){
+                if($banned['banned']==false){
                     if(IsEmpty($_POST['uname'])){
                        $Msg['unameERR']="You must enter a value for the user name!"; 
                     }else if(strlen($_POST['uname']) > 30){
