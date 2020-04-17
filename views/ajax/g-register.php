@@ -20,6 +20,23 @@ if(isset($_POST['register'])){
                     }else if(!UserNameReady($_POST['uname'])){
                        $Msg['unameERR']="Sorry, this username is already taken!"; 
                     }
+                    if(IsEmpty($_POST['agree'])){
+                        $Msg['legalErr']="You must agree to the privacy policy and terms of service!"; 
+                     }else if(!$_POST['agree']){
+                         $Msg['legalErr']="You must agree to the privacy policy and terms of service!";
+                     }
+                     if(!isset($Msg['legalErr']) && !isset($Msg['unameERR'])){
+                        try{
+                            $query = SQLWrapper()->prepare("INSERT INTO Users (Name, Picture, Bio,Email,gid,RealName,Tos) VALUES (?,?,?,?,?,?,?)");
+                            $query->execute([$_POST['uname'],$_SESSION['picture'],"This user as no bio, encourage them to make one!",$_SESSION['email'],$_SESSION['gid'],$_SESSION['name'],$_POST['agree']]);
+                            $Msg['success'] = true;
+                            $Msg['Msg'] = "Account Created";
+                        } catch (PDOException $e){
+                            $Msg['SysErr'] = true;
+                            $Msg['Msg'] = "There was an error creating your account. The system has notified of the error and it should be fixed soon. Please try again later.";  
+                            SendError("MySQL Error",$e->getMessage());
+                        }
+                     }
                 }else{
                     $Msg['SysErr'] = true;
                     $Msg['Msg'] = "This account is banned! Reason: ".$banned['Reason'];  

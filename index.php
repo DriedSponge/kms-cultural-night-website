@@ -22,8 +22,6 @@ $router->patch('pattern', function () { /* ... */
 });
 
 
-
-
 // Define routes
 // Errors
 
@@ -76,7 +74,6 @@ $router->all('/register/', function () {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
-    $header = "/home";
     include(__DIR__ . '/views/register.php');
 });
 $router->all('/login/', function () {

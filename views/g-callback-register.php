@@ -1,23 +1,30 @@
 <?php
+if(!isset($_SESSION['UserName'])){
 if (isset($_SESSION['access_token'])) {
     $gClient->setAccessToken($_SESSION['access_token']);
 } else if (isset($_GET['code'])) {
     $token = $gClient->fetchAccessTokenWithAuthCode($_GET['code']);
     $_SESSION['access_token'] = $token;
 } else {
-    header("Location: /login/");
+    header("Location: /register/");
     die();
 }
 $oAuth = new Google_Service_Oauth2($gClient);
 $UserData = $oAuth->userinfo_v2_me->get();
 if ($UserData["verified_email"]) {
-    $_SESSION['email'] = $UserData['email'];
-    $_SESSION['gid'] = $UserData['id'];
-    $_SESSION['picture'] = $UserData['picture'];
-    $_SESSION['gender'] = $UserData['gender'];
-    $_SESSION['name'] = $UserData['givenName'];
+    if(!UserExist($UserData['id'])){
+        $_SESSION['email'] = $UserData['email'];
+        $_SESSION['gid'] = $UserData['id'];
+        $_SESSION['picture'] = $UserData['picture'];
+        $_SESSION['name'] = $UserData['givenName'];
+    }else{
+        header("Location: /register/?e=An+account+already+exist+with+this+google+account!");
+    }
 } else {
-    die("poop");
+    header("Location: /register/?e=The+account+you=tried+to+sign+up+with+does+not+have+a+veirfied+email+tied+to+it!");
+}
+}else{
+    header("Location: /home/");
 }
 ?>
 <html>
@@ -89,13 +96,20 @@ if ($UserData["verified_email"]) {
 
                                             Loading(false, '#loading');
                                             if (data.success) {
-                                                
+                                                AlertSuccess(data.Msg)
                                             } else {
                                                 if(data.SysErr){
                                                     AlertError(data.Msg)
                                                 }else{
                                                     if(data.unameERR){
                                                         InValidate("#uname",data.unameERR)
+                                                    }else{
+                                                        Validate("#uname")
+                                                    }
+                                                    if(data.legalErr){
+                                                        InValidate("#legal",data.legalErr)
+                                                    }else{
+                                                        Validate("#legal")
                                                     }
                                                 }
                                             }
@@ -110,13 +124,15 @@ if ($UserData["verified_email"]) {
                                 <div id="uname-feedback"></div>
                             </div>
                             <div class="custom-control custom-checkbox mb-3">
-                                <input class="custom-control-input" id="legal" type="checkbox">
+                                <input feedback="#legal-feedback" class="custom-control-input" id="legal" type="checkbox">
+                            <div id="legal-feedback"></div>
+                                
                                 <label class="custom-control-label" for="legal">I have read and agree to the <strong><a href="<?= htmlspecialchars($dir); ?>tos/" target="_blank">Terms Of Service</a></strong> and <strong><a href="<?= htmlspecialchars($dir); ?>privacy/" target="_blank">Privacy Policy</a></strong></label>
                             </div>
                             <br>
                             <div class="text-center" style="justify-content:center">
                                 <div class="form-group">
-                                    <button type="submit" id="complete" class="btn btn-success" disabled>Complete Registration</button>
+                                    <button type="submit" id="complete" class="btn btn-success" >Complete Registration</button>
                                 </div>
                                 <div class=" form-group">
                                     <a class="btn btn-danger" href="<?= htmlspecialchars($dir); ?>logout/">Cancel Registration</a>

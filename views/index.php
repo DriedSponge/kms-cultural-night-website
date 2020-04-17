@@ -1,5 +1,4 @@
 <html>
-
 <body>
 
     <head>
@@ -10,7 +9,7 @@
     <?php include("views/includes/navbar.php"); ?>
     <div class="app">
         <div class="container-fluid-lg">
-            <h1 class="page-header">Welcome!</h1>
+            <h1 class="page-title">Welcome!</h1>
             <div class="container-fluid">
                 <div class="content-box">
                     <h1>About</h1>

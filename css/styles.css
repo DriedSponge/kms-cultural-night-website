@@ -103,7 +103,6 @@ color: white;
 .navbar-brand{
     font-family: 'Roboto';
     font-size: 1.2em;
-    letter-spacing: 3px;
 }
 .sub-nav,.sub-nav a{
     text-align: center;
@@ -121,4 +120,22 @@ color: white;
 }
 .round-size-1{
     max-width: 130px;
+}
+.alert{
+    font-size: 1.3em;
+    font-family: 'Roboto';
+}
+.alert b{
+    font-size: 1.4em;
+    font-family: 'Roboto';
+}
+.page-title{
+    font-size: 6em;
+    text-align: center;
+    color: white;
+    font-family: 'Roboto';
+    font-weight: 900;
+    margin-bottom: 30px;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
 }

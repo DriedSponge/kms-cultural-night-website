@@ -1,10 +1,14 @@
 <?php
-if(isset($_SESSION['access_token'])){
+if(isset($_SESSION['UserName'])){
+    header("Location: /home/");
+}else{
     unset($_SESSION['access_token']);
     $gClient->revokeToken();
     session_destroy();
-}
  $loginURL = $gClient->createAuthUrl();
+
+}
+
 ?>
 <html>
 
