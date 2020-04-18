@@ -120,7 +120,6 @@ function UserNameReady($username)
         return false;
     }
 }
-
 /**
  * Update a users email,photo,realname when they login
  *
@@ -138,6 +137,112 @@ function UpdateGInfo($name,$picture,$email,$id){
     } catch (PDOException $e){
         return false;
         SendError("MySQL Error",$e->getMessage());
+    }
+}
+
+/**
+ * Write a secure error to the DB
+ *
+ * @param string $msg
+ * @return string $id
+ */
+function NewError($msg){
+    $id = uniqid("E",false);
+    $query = SQLWrapper()->prepare("INSERT INTO Errors (ID, Msg, EndStamp) VALUES (?,?,?)");
+    $query->execute([$id,$msg,time()+300]);
+    return $id;
+}
+/**
+ * Get an error msg from the db
+ *
+ * @param string $id
+ * @return string msg
+ */
+function GetError($id){
+    $query = SQLWrapper()->prepare("SELECT Msg,EndStamp FROM Errors WHERE ID = :id");
+    $query->execute([":id"=>$id]);
+    $errorMSG = $query->fetch();
+    if(isset($errorMSG['EndStamp'])){
+        if(time() > $errorMSG['EndStamp']){
+            return null;
+        }else{
+            return $errorMSG['Msg'];
+        }
+    }else{
+        return NULL;
+    }
+    
+}
+/**
+ * Check if a user is an admi
+ *
+ * @param string $id
+ * @return boolean 
+ */
+function IsAdmin($id){
+    $array = array(
+        "116367054307199743956",
+        "104684477093479828612"
+    );
+    if(in_array($id,$array)){
+        return true;
+    }else{
+        return false;
+    }
+}
+/**
+ * Check if a user is n super admi
+ *
+ * @param string $id
+ * @return boolean 
+ */
+function IsSuperAdmin($id){
+    $array = array(
+        "116367054307199743956",
+        "104684477093479828612"
+    );
+    if(in_array($id,$array)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+/**
+ * Check if a user is a verified NSD User from Email
+ *
+ * @param string $identifier
+ * @param boolean $usingemail
+ * @return array 
+ */
+function IsNsd($identifier,$usingemail){
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    $array = array(
+        "apps.nsd.org",
+        "nsd.org"
+    );
+    if(!$usingemail){
+        $query = SQLWrapper()->prepare("SELECT Email FROM Users WHERE gid = :gid");
+        $query->execute([":gid"=>$identifier]);
+        $email = $query->fetch()['Email'];
+    }else{
+        $email = $identifier;
+    }
+    $domain = substr(strrchr($email, "@"), 1);
+    if(in_array($domain,$array)){
+        $array = array(
+            "nsd"=>true,
+            "badge"=>'<span title="Verifed NSD User" class="badge badge-pill badge-nsd"><img height="15px" src="'.$dir.'img/resources/nsdlogo.jpg"</span>'
+        );
+        return $array;
+    }else{
+        $array = array(
+            "nsd"=>false,
+            "badge"=>null
+        );
+        return $array;
     }
 }
 ?>

@@ -1,8 +1,14 @@
 <?php
-if(isset($_SESSION['UserName'])){
+if (isset($_SESSION['UserName'])) {
     header("Location: /home/");
+}else{
+    unset($_SESSION['access_token']);
+    $gClient->revokeToken();
+    session_destroy();
+    $loginURL = $gClient->createAuthUrl();
+    
 }
-$loginURL = $gClient->createAuthUrl();
+
 
 ?>
 <html>
@@ -22,9 +28,9 @@ $loginURL = $gClient->createAuthUrl();
                     <div class="content-box" style="max-width: 500px">
                         <h1>Register</h1>
                         <div class="text-center">
-                        <div id="error"></div>
-                        <p>Register With Google</p>
-                        <a href="<?= htmlspecialchars($loginURL); ?>"><img width="220px" class="img-fluid" src="<?=htmlspecialchars($dir);?>img/resources/btn_google_signin_dark_pressed_web@2x.png"></a>
+                            <div id="error"></div>
+                            <p>Register With Google</p>
+                            <a href="<?= htmlspecialchars($loginURL); ?>"><img width="220px" class="img-fluid" src="<?= htmlspecialchars($dir); ?>img/resources/btn_google_signin_dark_pressed_web@2x.png"></a>
                         </div>
                     </div>
                 </div>
@@ -53,16 +59,25 @@ $loginURL = $gClient->createAuthUrl();
             toastr["success"]("The URL has been copied to your clipboard!", "Congratulations!")
         }
     </script>
-    <?php if(isset($_GET['e'])){ ?>
-        <script>
-            var raw = '<?=htmlspecialchars($_GET["e"]);?>'
-            //var error = raw.replace("+", " "); 
-            $(document).ready(function(){
-                BlockError("#error", raw,"Error!");
+    <?php
+    if (isset($_GET['e'])) {
+        $error = GetError($_GET['e']);
+        if (!$error == null) {
 
-            })
-        </script>
-    <?php } ?>
+
+    ?>
+            <script>
+                var raw = '<?= htmlspecialchars($error); ?>'
+                //var error = raw.replace("+", " "); 
+                $(document).ready(function() {
+                    BlockError("#error", raw, "Error!");
+
+                })
+            </script>
+    <?php
+        }
+    }
+    ?>
 </body>
 
 </html>

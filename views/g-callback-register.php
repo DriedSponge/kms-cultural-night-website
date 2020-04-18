@@ -18,10 +18,12 @@ if ($UserData["verified_email"]) {
         $_SESSION['picture'] = $UserData['picture'];
         $_SESSION['name'] = $UserData['givenName'];
     }else{
-        header("Location: /register/?e=An+account+already+exist+with+this+google+account!");
+        $error = NewError("An account already exist with this google account!");
+        header("Location: /register/?e=$error");
     }
 } else {
-    header("Location: /register/?e=The+account+you=tried+to+sign+up+with+does+not+have+a+veirfied+email+tied+to+it!");
+    $error = NewError("The account you tried to sign up with does not have a verified email!");
+    header("Location: /register/?e=$error");
 }
 }else{
     header("Location: /home/");
@@ -92,12 +94,17 @@ if ($UserData["verified_email"]) {
                                             uname: uname
                                         })
                                         .done(function(data) {
-                                    $("#g-register-form").show();
-
                                             Loading(false, '#loading');
                                             if (data.success) {
                                                 AlertSuccess(data.Msg)
+                                                Validate("#uname")
+                                                Validate("#legal")
+                                                $("#success-message").removeClass("d-none")
+                                                setInterval(function(){
+                                                    location.href = "<?= htmlspecialchars($dir); ?>login/"
+                                                },4000)
                                             } else {
+                                                $("#g-register-form").show();
                                                 if(data.SysErr){
                                                     AlertError(data.Msg)
                                                 }else{
@@ -117,6 +124,11 @@ if ($UserData["verified_email"]) {
                                 })
                             })
                         </script>
+                        <div id="success-message" class="d-none">
+                                <div class="alert alert-success text-center"  role="alert">
+                                    <span><b>Success!</b><br><span id="success_message_text">Your account has been created! You will now be redirected to the login page so you can get started!</span></span>
+                                </div>
+                            </div>
                         <div id="loading"></div>
                         <form id="g-register-form">
                             <div class="form-group">
@@ -132,7 +144,7 @@ if ($UserData["verified_email"]) {
                             <br>
                             <div class="text-center" style="justify-content:center">
                                 <div class="form-group">
-                                    <button type="submit" id="complete" class="btn btn-success" >Complete Registration</button>
+                                    <button type="submit" id="complete" class="btn btn-success" disabled>Complete Registration</button>
                                 </div>
                                 <div class=" form-group">
                                     <a class="btn btn-danger" href="<?= htmlspecialchars($dir); ?>logout/">Cancel Registration</a>

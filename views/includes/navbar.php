@@ -58,7 +58,12 @@
                     <ul class="navbar-nav  mt-2 mt-lg-0">
                         <li class="nav-item dropdown" style="list-style-type:none;">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" style="color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <?= htmlspecialchars($_SESSION['UserName']); ?>
+                                <?=htmlspecialchars($_SESSION['UserName']);?>
+                                <?php 
+                                $badge = IsNsd($_SESSION['email'],true)['badge'];
+                                echo $badge; 
+                                ?>
+
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>

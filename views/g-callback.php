@@ -29,7 +29,9 @@ if(UserExist($UserData['id'])){
         header("Location: /logout/");
     }  
 }else{
-    header("Location: /register/?e=The+account+you+tried+to+login+with+is+not+registered.+Please+register+here!");    
+    $error = NewError("This account is unregistered! Please register it here!");
+
+    header("Location: /register/?e=$error");    
 }
 
 

@@ -139,3 +139,7 @@ color: white;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: black;
 }
+.badge-nsd {
+    color: #003cff;
+    background-color: rgb(255, 255, 255);
+}
