@@ -4,7 +4,7 @@ body {
     flex-direction: column;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    background-color: #E15B14;
+    background-color: rgb(255, 89, 0);
     color: white;
 }
 .app {
@@ -79,7 +79,7 @@ body {
     font-weight: bold;
 }
 .navbar{
-    background-color: #E15B14;
+    background-color: rgb(255, 89, 0);
     color: white;
     padding-top: .4rem;
     padding-right: 1rem;
@@ -136,10 +136,21 @@ color: white;
     font-family: 'Roboto';
     font-weight: 900;
     margin-bottom: 30px;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: black;
+    text-shadow: 2px 2px #000000;
 }
 .badge-nsd {
-    color: #003cff;
-    background-color: rgb(255, 255, 255);
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #005F94;
+}
+.badge-admin {
+    color: #ffffff;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: rgb(255, 0, 0);
+}
+.profile-page-img{
+    max-width: 100px;
+    padding: 5px;
 }

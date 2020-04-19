@@ -177,7 +177,7 @@ function GetError($id){
  * Check if a user is an admi
  *
  * @param string $id
- * @return boolean 
+ * @return array 
  */
 function IsAdmin($id){
     $array = array(
@@ -185,13 +185,22 @@ function IsAdmin($id){
         "104684477093479828612"
     );
     if(in_array($id,$array)){
-        return true;
+        $admin = array(
+            "admin"=>true,
+            "badge"=>'<span  title="Administrator" class="text-center badge badge-admin">Admin</span>',
+            "color"=>'#0099ff'
+        );
+        return $admin;
     }else{
-        return false;
+        $admin = array(
+            "admin"=>false,
+            "badge"=>null
+        );
+        return $admin;
     }
 }
 /**
- * Check if a user is n super admi
+ * Check if a user is  super admin
  *
  * @param string $id
  * @return boolean 
@@ -234,7 +243,8 @@ function IsNsd($identifier,$usingemail){
     if(in_array($domain,$array)){
         $array = array(
             "nsd"=>true,
-            "badge"=>'<span title="Verifed NSD User" class="badge badge-pill badge-nsd"><img height="15px" src="'.$dir.'img/resources/nsdlogo.jpg"</span>'
+            "badge"=>'<span  title="Verifed NSD User" class="text-center badge badge-nsd">NSD</span>',
+            "color"=>'#0099ff'
         );
         return $array;
     }else{
@@ -245,4 +255,5 @@ function IsNsd($identifier,$usingemail){
         return $array;
     }
 }
+
 ?>

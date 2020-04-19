@@ -113,7 +113,14 @@ $router->all('/google-register/', function () {
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     include(__DIR__ . '/views/g-callback-register.php');
 });
-
+$router->all('/profile/{name}', function ($name) {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    include(__DIR__ . '/views/profile.php');
+});
 $router->all('/ajax/{ajax}', function ($ajax) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "config.php";

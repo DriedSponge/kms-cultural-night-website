@@ -59,15 +59,14 @@
                         <li class="nav-item dropdown" style="list-style-type:none;">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" style="color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <?=htmlspecialchars($_SESSION['UserName']);?>
-                                <?php 
-                                $badge = IsNsd($_SESSION['email'],true)['badge'];
-                                echo $badge; 
-                                ?>
-
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                                
+                                <a class="dropdown-item" href="/profile/<?=htmlspecialchars($_SESSION['UserName']);?>"><i class="fas fa-user"></i> My Profile</a>
+                                <a class="dropdown-item" href="/account-settings/"><i class="fas fa-cog"></i> Settings</a>
+                                <?php if(IsAdmin($_SESSION['gid'])){ ?>
+                                <a class="dropdown-item" href="/admin/"><i class="fas fa-shield-alt"></i> Admin Panel</a>
+                                <?php } ?>
                             </div>
                         </li>
                     </ul>
