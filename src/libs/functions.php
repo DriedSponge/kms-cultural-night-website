@@ -255,5 +255,30 @@ function IsNsd($identifier,$usingemail){
         return $array;
     }
 }
-
+/**
+ * Us this function to display a date. Makes it easy to have the same formatting across the site
+ *
+ * @param string $stamp
+ * @return string 
+ */
+function FormatDate($stamp){
+    $date = date("n/j/Y g:i A",$stamp);
+    return $date;
+}
+/**
+ * Visible Error Alert For  Returning HTML
+ * @param string $msg
+ */
+function AlertError($msg){
+    $script = '<script> AlertError("'.$msg.'") </script>';
+    echo $script;
+}
+/**
+ * Visible Success Alert For Returning HTML
+ * @param string $msg
+ */
+function AlertSuccess($msg){
+    $script = '<script> AlertSuccess("'.$msg.'") </script>';
+    echo $script;
+}
 ?>

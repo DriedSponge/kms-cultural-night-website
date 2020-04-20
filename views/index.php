@@ -29,11 +29,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="<?= htmlspecialchars($dir); ?>js/argon.js"></script>
     <script src="https://kit.fontawesome.com/0add82e87e.js" crossorigin="anonymous"></script>
-
     <script src="https://unpkg.com/tippy.js@4"></script>
     <script>
         navitem = document.getElementById('homelink').classList.add('active')
+        const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+        observer.observe();
     </script>
+     
 
 
 

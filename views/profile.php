@@ -1,18 +1,24 @@
 <?php
-$user = SQLWrapper()->prepare("SELECT Name, CreationDate, Picture,Bio,gid,RealName FROM Users WHERE Name = :name");
+$user = SQLWrapper()->prepare("SELECT Name,Picture,Bio,gid,RealName,UNIX_TIMESTAMP(CreationDate) AS CreationDate FROM Users WHERE Name = :name");
 $user->execute([":name" => $name]);
 $data = $user->fetch();
 
 ?>
+<!DOCTYPE HTML>
 <html>
 
-<body>
+<head>
+    <?php include("views/includes/head.php"); ?>
+    <?php if (!$data == null) { ?>
+        <title><?= htmlspecialchars($name); ?>'s Profile - KMS Cultural Night</title>
+        <meta name="description" content="<?= htmlspecialchars($data['Bio']); ?>">
+    <?php } else { ?>
+        <title>User Not Found - KMS Cultural Night</title>
+        <meta name="description" content="The user you're looking for does not exist or they changed their username!">
+    <?php } ?>
+</head>
 
-    <head>
-        <?php include("views/includes/head.php"); ?>
-        <title><?= htmlspecialchars($name); ?>'s Profile</title>
-        <meta name="description" content="Decription">
-    </head>
+<body>
     <?php include("views/includes/navbar.php"); ?>
     <div class="app">
         <div class="container-fluid-lg">
@@ -32,12 +38,12 @@ $data = $user->fetch();
                     ?>
                         <div class="content-box">
                             <div class="text-center">
-                                <?php if($ban['banned']){ ?>
-                                <div class="alert alert-danger" role="alert">
-                                    This user is banned! Reason: <?=htmlspecialchars($ban['Reason']);?>
-                                </div>
+                                <?php if ($ban['banned']) { ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        This user is banned! Reason: <?= htmlspecialchars($ban['Reason']); ?>
+                                    </div>
                                 <?php } ?>
-                                <img class="img-fluid profile-page-img" src="<?= htmlspecialchars($data['Picture']); ?>">
+                                <img class="img-fluid profile-page-img lozad" alt="<?= htmlspecialchars($name); ?>'s Profile Picture'" data-src="<?= htmlspecialchars($data['Picture']); ?>">
                             </div>
                             <h1 style="margin: 0px"><?= htmlspecialchars($name); ?></h1>
                             <div class="row" style="justify-content: center">
@@ -57,6 +63,9 @@ $data = $user->fetch();
                                 ?>
 
                             </div>
+                            <?php if ($data['Bio'] == null) {
+                                $data['Bio'] = "This user as no bio, encourage them to make one!";
+                            } ?>
                             <h2>About</h2>
                             <p class="text-center"><?= htmlspecialchars($data['Bio']); ?><br></p>
                             <?php if (isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']) { ?>
@@ -64,11 +73,16 @@ $data = $user->fetch();
                                 <div class="row" style="justify-content: center">
                                     <?php if (!$ban['banned']) { ?>
                                         <button class="btn btn-danger">Ban</button>
-                                    <?php }else{ ?>
+                                    <?php } else { ?>
                                         <button class="btn btn-danger">Unban</button>
                                     <?php } ?>
+                                    <br>
+
+                                    <script src="<?= htmlspecialchars($dir); ?>admin-scripts/edit-profile.js"></script>
                                     <button class="btn btn-success">Edit Profile</button>
-                                    <button class="btn btn-info">View Extra Information</button>
+                                    <br>
+                                    <script src="<?= htmlspecialchars($dir); ?>admin-scripts/extra-info.js"></script>
+                                    <button onclick="ExtraInfo('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-info">View Extra Information</button>
                                 </div>
                             <?php } ?>
                         </div>
@@ -80,7 +94,50 @@ $data = $user->fetch();
                         <br>
                         <div class="content-box">
                             <h1>Stats</h1>
-                            <p class="text-center">Nothing yet...</p>
+                            <div class="container">
+                                <div class="row display-flex">
+                                    <div class="col indexcol">
+                                        <div class="card card-border">
+                                            <div class="card-body">
+                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/document.png" alt="Text Post" class="img-fluid lozad" style="max-height:100px;" />
+                                                <h1>Text Post</h1>
+                                                <h2 style="font-size: 3em">0</h2>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col indexcol">
+                                        <div class="card card-border">
+                                            <div class="card-body">
+                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/video-camera.png" alt="Video Post" class="img-fluid lozad" style="max-height:100px;" />
+                                                <h1>Video Post</h1>
+                                                <h2 style="font-size: 3em">0</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col indexcol">
+
+                                        <div class="card card-border">
+                                            <div class="card-body">
+                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/gallery.png" alt="Photo Post" class="img-fluid lozad" style="max-height:100px;" />
+                                                <h1>Photo Post</h1>
+                                                <h2 style="font-size: 3em">0</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row display-flex">
+                                    <div class="col indexcol">
+                                        <div class="card card-border">
+                                            <div class="card-body">
+                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/calendar.png" alt="Calendar" class="img-fluid lozad" style="max-height:100px;" />
+                                                <h1>Account Created:</h1>
+                                                <h2 style="font-size: 3em"><?= htmlspecialchars(FormatDate($data['CreationDate'])); ?></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     <?php } else { ?>
                         <div class="content-box">
@@ -94,19 +151,15 @@ $data = $user->fetch();
     <!--  Modals -->
 
     <div id="modal"></div>
+    <br>
+
+    <?php include("views/includes/footer.php"); ?>
 
 
-
-    <script src="<?= htmlspecialchars($dir); ?>js/toastr.min.js"></script>
-    <script src="https://unpkg.com/popper.js@1"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="<?= htmlspecialchars($dir); ?>js/argon.js"></script>
-    <script src="https://kit.fontawesome.com/0add82e87e.js" crossorigin="anonymous"></script>
-
-    <script src="https://unpkg.com/tippy.js@4"></script>
-
-
-
+    <script>
+        const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+        observer.observe();
+    </script>
 
 </body>
 

@@ -154,3 +154,63 @@ color: white;
     max-width: 100px;
     padding: 5px;
 }
+.page-footer{
+    padding-bottom: 10px;
+    padding-top: 5px;
+    text-align: center; 
+}
+.copyright{
+    font-size: 0.7em;
+}
+.footer-text,.footer-text a{
+    font-size: 1.1em;
+    font-weight: bold;
+    color: rgba(255,255,255,.65);
+}
+.footer-text a:hover{
+    color: white;
+}
+.card-border{
+    margin: 10px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    text-align:center;
+    max-width: 1000px;
+}
+.row.display-flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+.row.display-flex > .col {
+    display: flex;
+    flex-direction: column;
+}
+.card{
+    height: 100%;
+}
+.card-border .paragraph{
+    font-size: 1.1em;
+}
+.card-border .card-body .heading{
+    font-size: 1.6em;
+    font-family: 'Bangers';
+    letter-spacing: 3px;
+    color: black;
+}
+.card h1{
+    color: black;
+    font-weight: 500;
+    font-size:2em;
+    font-family: 'Roboto';
+    letter-spacing: 3px;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+.modal-title{
+    color: black;
+    font-weight: 900;
+    font-size: 2em;
+    font-family: 'Roboto';
+    letter-spacing: 3px;
+    text-align: center;
+}

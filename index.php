@@ -124,10 +124,22 @@ $router->all('/profile/{name}', function ($name) {
 $router->all('/ajax/{ajax}', function ($ajax) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "config.php";
-
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     include(__DIR__ . '/views/ajax/' . $ajax);
+});
+$router->all('/admin-scripts/{script}', function ($script) {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+    if (isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']) {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    header("Content-type:  text/javascript");
+    include(__DIR__ . '/js/protected/' . $script);
+    }else{
+        echo "Unauthorized";
+    }
 });
 $router->run();
