@@ -76,11 +76,10 @@ $data = $user->fetch();
                                     <?php } else { ?>
                                         <button class="btn btn-danger">Unban</button>
                                     <?php } ?>
-                                    <br>
-
+                                    <script src="<?= htmlspecialchars($dir); ?>admin-scripts/restrictions.js"></script>
+                                    <button onclick="EditRestrictions('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-warning">Edit Restrictions</button>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/edit-profile.js"></script>
                                     <button class="btn btn-success">Edit Profile</button>
-                                    <br>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/extra-info.js"></script>
                                     <button onclick="ExtraInfo('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-info">View Extra Information</button>
                                 </div>

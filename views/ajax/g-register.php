@@ -29,8 +29,14 @@ if (isset($_POST['register'])) {
                     }
                     if (!isset($Msg['legalErr']) && !isset($Msg['unameERR'])) {
                         try {
-                            $query = SQLWrapper()->prepare("INSERT INTO Users (Name, Picture, Bio,Email,gid,RealName,Tos) VALUES (?,?,?,?,?,?,?)");
-                            $query->execute([$_POST['uname'], $_SESSION['picture'], "This user has no bio, encourage them to make one!", $_SESSION['email'], $_SESSION['gid'], $_SESSION['name'], $_POST['agree']]);
+                            $res = array(
+                                "UserNameChange"=>false,
+                                "BioChange"=>false,
+                                "PictureChange"=>false
+                            );
+                            
+                            $query = SQLWrapper()->prepare("INSERT INTO Users (Name, Picture, Bio,Email,gid,RealName,Tos,Restrictions) VALUES (?,?,?,?,?,?,?,?)");
+                            $query->execute([$_POST['uname'], $_SESSION['picture'], "This user has no bio, encourage them to make one!", $_SESSION['email'], $_SESSION['gid'], $_SESSION['name'], $_POST['agree'],json_encode($res)]);
                             $Msg['success'] = true;
                             $Msg['Msg'] = "Account Created";
                             unset($_SESSION['access_token']);

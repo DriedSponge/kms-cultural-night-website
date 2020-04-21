@@ -211,6 +211,18 @@ color: white;
     font-weight: 900;
     font-size: 2em;
     font-family: 'Roboto';
-    letter-spacing: 3px;
     text-align: center;
+}
+.modal-body h1{
+    color: black;
+    font-weight: 500;
+    font-size: 1.6em;
+    font-family: 'Roboto';
+    text-align: center;
+}
+.custom-toggle input:checked + .custom-toggle-slider {
+    border: 1px solid red;
+}
+.custom-toggle input:checked + .custom-toggle-slider:before {
+    background: red;
 }

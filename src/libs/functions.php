@@ -281,4 +281,39 @@ function AlertSuccess($msg){
     $script = '<script> AlertSuccess("'.$msg.'") </script>';
     echo $script;
 }
+/**
+ * Set a users restrictions
+ *
+ * @param array $restrictions
+ * @param string $gid
+ * @return boolean 
+ */
+function ApplyRestrictions($restrictions,$gid){
+    $restrict = json_encode($restrictions);
+    try{
+        $query = SQLWrapper()->prepare("UPDATE Users SET Restrictions = :res WHERE gid = :gid");
+        $query->execute([":res"=>$restrict,"gid"=>$gid]);
+        return true;
+    }catch (PDOException $e){
+        SendError("MySQL Error (KMS)",$e->getMessage());
+        return false;
+    }
+}
+/**
+ * Fetch a users restrictions
+ *
+ * @param string $gid
+ * @return array 
+ */
+function FetchRestrictions($gid){
+        $query = SQLWrapper()->prepare("SELECT Restrictions FROM Users WHERE gid = :gid");
+        $query->execute(["gid"=>$gid]);
+        $data = $query->fetch();
+        if($data==null){
+            return null;
+        }else{
+            $restrictions = json_decode($data['Restrictions'],true);
+            return $restrictions;
+        }     
+}
 ?>
