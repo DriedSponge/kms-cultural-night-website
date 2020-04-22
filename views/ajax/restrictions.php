@@ -25,17 +25,42 @@ if (isset($_POST['restrict'])) {
                         var picdef = <?php echo $restrictions['PictureChange'] ? 'true' : 'false'; ?>;
                         document.getElementById("pic-r").checked = picdef;
 
-                        $(document).ready(function() {
-                            if (!IsBlurred) {
-                                $("#blur-ammount").hide()
-                            }
-                        })
-                        $("#blurcheck").click(function() {
-                            if ($("#blurcheck").prop("checked")) {
-                                $("#blur-ammount").show()
+                        $("#apply-restrictions").submit(function(e) {
+                            e.preventDefault()
+                            var uname = $("#uname-r").prop("checked")
+                            if (uname) {
+                                var uname = 1
                             } else {
-                                $("#blur-ammount").hide()
+                                var uname = 0
                             }
+                            var bio = $("#bio-r").prop("checked")
+                            if (bio) {
+                                var bio = 1
+                            } else {
+                                var bio = 0
+                            }
+                            var pic = $("#pic-r").prop("checked")
+                            if (pic) {
+                                var pic = 1
+                            } else {
+                                var pic = 0
+                            }
+                            $.post('<?= htmlspecialchars($dir); ?>ajax/restrictions.php', {
+                                    uname: uname,
+                                    bio: bio,
+                                    pic: pic,
+                                    restrict2: 1,
+                                    gid: '<?= htmlspecialchars($gid); ?>'
+                                })
+                                .done(function(data) {
+                                    if (data.success) {
+                                        AlertSuccess(data.Msg);
+                                        $("#view-modal").modal("hide");
+                                    } else {
+                                        AlertError(data.Msg)
+                                    }
+                                })
+
                         })
                     </script>
                     <div class="modal" tabindex="-1" id="view-modal" role="dialog">
@@ -47,7 +72,8 @@ if (isset($_POST['restrict'])) {
                                         <span aria-hidden="true" style="font-size: 30px">&times;</span>
                                     </button>
                                 </div>
-                                <form>
+
+                                <form id="apply-restrictions">
                                     <div class="modal-body">
                                         <h1>Modify what <?= htmlspecialchars($data['Name']); ?> can/can't do</h1>
                                         <br>
@@ -59,13 +85,13 @@ if (isset($_POST['restrict'])) {
                                                 <span class="custom-toggle-slider rounded-circle"></span>
                                             </label>
                                         </div>
-                                    
+
                                         <div class="form-group text-center">
                                             <label>Restrict Bio Changes</label>
                                             <br>
                                             <label class="custom-toggle">
-                                                <input type="checkbox">
-                                                <span id="bio-r" class="custom-toggle-slider rounded-circle"></span>
+                                                <input id="bio-r" type="checkbox">
+                                                <span class="custom-toggle-slider rounded-circle"></span>
                                             </label>
                                         </div>
 
@@ -79,7 +105,7 @@ if (isset($_POST['restrict'])) {
                                         </div>
                                     </div>
                                     <div class="modal-footer text-center" style="justify-content: center">
-                                        <button type="submit" class="btn btn-success" data-dismiss="modal">Apply Restrictions</button>
+                                        <button type="submit" class="btn btn-success">Apply Restrictions</button>
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>
@@ -97,4 +123,45 @@ if (isset($_POST['restrict'])) {
     } else {
         AlertError("Invalid Post Data");
     }
+}
+
+if (isset($_POST['restrict2'])) {
+    $Msg = array(
+        "success" => false,
+        "Msg" => "Something went wrong!"
+    );
+    header("Content-type: application/json");
+    if (isset($_SESSION['gid'])) {
+        if (IsAdmin($_SESSION['gid'])['admin']) {
+            if (UserExist($_POST['gid'])) {
+
+                if (isset($_POST['uname']) && isset($_POST['bio']) && isset($_POST['pic'])) {
+                    $res = array(
+                        "UserNameChange" => $_POST['uname'] ? true : false,
+                        "BioChange" => $_POST['bio'] ? true : false,
+                        "PictureChange" => $_POST['pic'] ? true : false
+                    );
+                    if (ApplyRestrictions($res, $_POST['gid'])) {
+                        $Msg = array(
+                            "success" => true,
+                            "Msg" => "Restrictions applied!"
+                        );
+                    } else {
+                        $Msg['Msg'] = "There was an error saving the changes to the database!";
+                    }
+                } else {
+                    $Msg['Msg'] = "Invalid post values!";
+                }
+            } else {
+                $Msg['Msg'] = "User does not exist!";
+            }
+        } else {
+            $Msg['Msg'] = "Unauthorized";
+        }
+    } else {
+        $Msg['Msg'] = "Invalid Session";
+    }
+
+
+    die(json_encode($Msg));
 }

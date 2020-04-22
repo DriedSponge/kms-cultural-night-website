@@ -11,16 +11,9 @@ if (isset($_POST['register'])) {
             if (!UserExist($_SESSION['gid'])) {
                 $banned = IsBanned($_SESSION['gid']);
                 if ($banned['banned'] == false) {
-                    if (IsEmpty($_POST['uname'])) {
-                        $Msg['unameERR'] = "You must enter a value for the user name!";
-                    } else if (strlen($_POST['uname']) > 30) {
-                        $Msg['unameERR'] = "Your username must be less than 30 characters!";
-                    } else if (strlen($_POST['uname']) < 3) {
-                        $Msg['unameERR'] = "Your username must be greater than 3 characters!";
-                    }else if(preg_match('[\s]',$_POST['uname'])){
-                        $Msg['unameERR'] = "Spaces are not allowe in user names!";
-                    } else if (!UserNameReady($_POST['uname'])) {
-                        $Msg['unameERR'] = "Sorry, this username is already taken!";
+                    $NameCheck = UserNameValidate($_POST['uname']);
+                    if (!$NameCheck == null) {
+                        $Msg['unameERR'] = $NameCheck;
                     }
                     if (IsEmpty($_POST['agree'])) {
                         $Msg['legalErr'] = "You must agree to the privacy policy and terms of service!";
@@ -30,13 +23,13 @@ if (isset($_POST['register'])) {
                     if (!isset($Msg['legalErr']) && !isset($Msg['unameERR'])) {
                         try {
                             $res = array(
-                                "UserNameChange"=>false,
-                                "BioChange"=>false,
-                                "PictureChange"=>false
+                                "UserNameChange" => false,
+                                "BioChange" => false,
+                                "PictureChange" => false
                             );
-                            
+
                             $query = SQLWrapper()->prepare("INSERT INTO Users (Name, Picture, Bio,Email,gid,RealName,Tos,Restrictions) VALUES (?,?,?,?,?,?,?,?)");
-                            $query->execute([$_POST['uname'], $_SESSION['picture'], "This user has no bio, encourage them to make one!", $_SESSION['email'], $_SESSION['gid'], $_SESSION['name'], $_POST['agree'],json_encode($res)]);
+                            $query->execute([$_POST['uname'], $_SESSION['picture'], "This user has no bio, encourage them to make one!", $_SESSION['email'], $_SESSION['gid'], $_SESSION['name'], $_POST['agree'], json_encode($res)]);
                             $Msg['success'] = true;
                             $Msg['Msg'] = "Account Created";
                             unset($_SESSION['access_token']);

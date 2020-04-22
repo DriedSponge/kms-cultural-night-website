@@ -120,25 +120,7 @@ function UserNameReady($username)
         return false;
     }
 }
-/**
- * Update a users email,photo,realname when they login
- *
- * @param string $name
- * @param string $picture
- * @param string $email
- * @param string $id
- * @return boolean
- */
-function UpdateGInfo($name,$picture,$email,$id){
-    try{
-        $query = SQLWrapper()->prepare("UPDATE Users SET RealName = :name, Picture = :picture, Email = :email WHERE gid = :gid");
-        $query->execute([":name"=>$name,"picture"=>$picture,":email"=>$email,":gid"=>$id]);
-        return true;
-    } catch (PDOException $e){
-        return false;
-        SendError("MySQL Error",$e->getMessage());
-    }
-}
+
 
 /**
  * Write a secure error to the DB
@@ -316,4 +298,49 @@ function FetchRestrictions($gid){
             return $restrictions;
         }     
 }
-?>
+/**
+ * Update a users email,photo,realname when they login
+ *
+ * @param string $name
+ * @param string $picture
+ * @param string $email
+ * @param string $id
+ * @return boolean
+ */
+function UpdateGInfo($name,$picture,$email,$id){
+    try{
+        if(FetchRestrictions($id)['PictureChange']){
+            $query = SQLWrapper()->prepare("UPDATE Users SET RealName = :name, Email = :email WHERE gid = :gid");
+            $query->execute([":name"=>$name,":email"=>$email,":gid"=>$id]);
+        }else{
+            $query = SQLWrapper()->prepare("UPDATE Users SET RealName = :name, Picture = :picture, Email = :email WHERE gid = :gid");
+        $query->execute([":name"=>$name,"picture"=>$picture,":email"=>$email,":gid"=>$id]);
+        }
+        
+        return true;
+    } catch (PDOException $e){
+        return false;
+        SendError("MySQL Error",$e->getMessage());
+    }
+}
+/**
+ * Validate a username
+ *
+ * @param string $string
+ * @return string 
+ */
+function UserNameValidate($string){
+    if (IsEmpty($string)) {
+        return "You must enter a value for the user name.";
+    } else if (strlen($string) > 30) {
+        return "Usernames must be less than 30 characters.";
+    } else if (strlen($string) < 3) {
+        return "Usernames must be greater than 3 characters.";
+    }else if(preg_match('[\s]',$string)){
+        return "Spaces are not allowed in usernames.";
+    } else if (!UserNameReady($string)) {
+        return "Sorry, this username is already taken";
+    }else{
+        return null;
+    }
+}

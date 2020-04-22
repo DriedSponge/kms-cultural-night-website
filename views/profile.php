@@ -43,9 +43,9 @@ $data = $user->fetch();
                                         This user is banned! Reason: <?= htmlspecialchars($ban['Reason']); ?>
                                     </div>
                                 <?php } ?>
-                                <img class="img-fluid profile-page-img lozad" alt="<?= htmlspecialchars($name); ?>'s Profile Picture'" data-src="<?= htmlspecialchars($data['Picture']); ?>">
+                                <img id="profile-picture" class="img-fluid profile-page-img lozad" alt="<?= htmlspecialchars($name); ?>'s Profile Picture'" data-src="<?= htmlspecialchars($data['Picture']); ?>">
                             </div>
-                            <h1 style="margin: 0px"><?= htmlspecialchars($name); ?></h1>
+                            <h1 id="username" style="margin: 0px"><?= htmlspecialchars($name); ?></h1>
                             <div class="row" style="justify-content: center">
                                 <?php
                                 $nsd = IsNsd($data['gid'], false);
@@ -67,7 +67,7 @@ $data = $user->fetch();
                                 $data['Bio'] = "This user as no bio, encourage them to make one!";
                             } ?>
                             <h2>About</h2>
-                            <p class="text-center"><?= htmlspecialchars($data['Bio']); ?><br></p>
+                            <p id="bio" class="text-center"><?= htmlspecialchars($data['Bio']); ?><br></p>
                             <?php if (isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']) { ?>
                                 <h2>Admin Actions</h2>
                                 <div class="row" style="justify-content: center">
@@ -79,7 +79,7 @@ $data = $user->fetch();
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/restrictions.js"></script>
                                     <button onclick="EditRestrictions('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-warning">Edit Restrictions</button>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/edit-profile.js"></script>
-                                    <button class="btn btn-success">Edit Profile</button>
+                                    <button onclick="EditProfile('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-success">Edit Profile</button>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/extra-info.js"></script>
                                     <button onclick="ExtraInfo('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-info">View Extra Information</button>
                                 </div>
