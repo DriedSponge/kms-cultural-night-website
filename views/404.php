@@ -12,7 +12,7 @@
             <div class="container-fluid">
                 <div class="content-box">
                     <h1>404 - Page Not Found</h1>
-                    <p class="text-center">Due to the COVID-19 virus and the closure of school, we've moved the event online! Here you can post... To</p>
+                    <p class="text-center">Don't worry, it's us, not you. The page you are looking for cannot be found. Either the page was moved, or it does not exist.</p>
                 </div>
             </div>
         </div>
