@@ -26,7 +26,6 @@
     <?php include("views/includes/footer.php"); ?>
 
     <script>
-        navitem = document.getElementById('homelink').classList.add('active')
         const observer = lozad();
         observer.observe();
     </script>

@@ -121,6 +121,18 @@ $router->all('/profile/{name}', function ($name) {
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     include(__DIR__ . '/views/profile.php');
 });
+$router->all('/account-settings/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "config.php";
+    if(isset($_SESSION['UserName'])){
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+        $host = $_SERVER['SERVER_NAME'];
+        $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+        include(__DIR__ . '/views/account-settings.php');
+    }else{
+        header("Location: /login/");
+    }
+});
 $router->all('/ajax/{ajax}', function ($ajax) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "config.php";
@@ -128,6 +140,14 @@ $router->all('/ajax/{ajax}', function ($ajax) {
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     include(__DIR__ . '/views/ajax/' . $ajax);
+});
+$router->all('/credits/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    include(__DIR__ . '/views/credits.php');
 });
 $router->all('/admin-scripts/{script}', function ($script) {
     require_once "GoogleAPI/vendor/autoload.php";

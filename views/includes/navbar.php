@@ -11,32 +11,11 @@
 
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item" id="homelink"><a class="nav-link" href="/home/">Home</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="Food" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Food
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="Food">
-                            <a class="dropdown-item" href="/food/tunisia">Tunisia</a>
-                            <a class="dropdown-item" href="/food/japan">Japan</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="Music" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Music
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="MyProjects">
-                            <a class="dropdown-item" href="/Music">Music</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Other
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/gatherings">Gatherings</a>
-                            <a class="dropdown-item" href="/sports">Sports</a>
-                        </div>
-                    </li>
+                    <li class="nav-item" id="foodlink"><a class="nav-link" href="/food/">Food</a></li>
+                    <li class="nav-item" id="musiclink"><a class="nav-link" href="/music/">Music</a></li>
+                    <li class="nav-item" id="sportslink"><a class="nav-link" href="/sports/">Sports</a></li>
+                    <li class="nav-item" id="gatheringslink"><a class="nav-link" href="/gatherings/">Gatherings</a></li>
+                    <li class="nav-item" id="otherlink"><a class="nav-link" href="/other/">Other</a></li>
                 </ul>
 
                 <?php

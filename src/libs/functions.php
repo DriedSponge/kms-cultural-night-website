@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Send an error to discord
  *
@@ -6,7 +7,8 @@
  * @param string $message
  * @return boolean
  */
-function SendError($type,$message){
+function SendError($type, $message)
+{
     $request = json_encode([
         "content" => "",
         "embeds" => [
@@ -57,7 +59,7 @@ function IsEmpty($string)
 function UserInfo($gid)
 {
     $query = SQLWrapper()->prepare("SELECT * FROM Users WHERE gid = :gid");
-    $query ->execute([":gid" => $gid]);
+    $query->execute([":gid" => $gid]);
     $info = $query->fetch();
     if (!empty($info)) {
         $account = array("exist" => true, "UserName" => $info['Name'], "CreationDate" => $info['CreationDate'], "Picture" => $info['Picture'], "Bio" => $info['Bio'], "RealName" => $info['RealName'], "Email" => $info['Email'], "TOS" => $info['TOS']);
@@ -78,7 +80,7 @@ function UserExist($gid)
     $query = SQLWrapper()->prepare("SELECT Name FROM Users WHERE gid = ?");
     $query->execute([$gid]);
     $info =  $query->fetch();
-    if(empty($info)) {
+    if (empty($info)) {
         return false;
     } else {
         return true;
@@ -96,7 +98,7 @@ function IsBanned($gid)
     $query->execute([":gid" => $gid]);
     $info = $query->fetch();
     if (!empty($info)) {
-        $ban = array("banned" => true, "UserInfo" => $info['UserInfo'], "Date" => $info['Date'], "AdminInfo" => $info['AdminInfo'], "Reason" => $info['Reason'],"gid"=>$info['gid']);
+        $ban = array("banned" => true, "UserInfo" => $info['UserInfo'], "Date" => $info['Date'], "AdminInfo" => $info['AdminInfo'], "Reason" => $info['Reason'], "gid" => $info['gid']);
         return $ban;
     } else {
         $ban = array("banned" => false);
@@ -128,10 +130,11 @@ function UserNameReady($username)
  * @param string $msg
  * @return string $id
  */
-function NewError($msg){
-    $id = uniqid("E",false);
+function NewError($msg)
+{
+    $id = uniqid("E", false);
     $query = SQLWrapper()->prepare("INSERT INTO Errors (ID, Msg, EndStamp) VALUES (?,?,?)");
-    $query->execute([$id,$msg,time()+300]);
+    $query->execute([$id, $msg, time() + 300]);
     return $id;
 }
 /**
@@ -140,20 +143,20 @@ function NewError($msg){
  * @param string $id
  * @return string msg
  */
-function GetError($id){
+function GetError($id)
+{
     $query = SQLWrapper()->prepare("SELECT Msg,EndStamp FROM Errors WHERE ID = :id");
-    $query->execute([":id"=>$id]);
+    $query->execute([":id" => $id]);
     $errorMSG = $query->fetch();
-    if(isset($errorMSG['EndStamp'])){
-        if(time() > $errorMSG['EndStamp']){
+    if (isset($errorMSG['EndStamp'])) {
+        if (time() > $errorMSG['EndStamp']) {
             return null;
-        }else{
+        } else {
             return $errorMSG['Msg'];
         }
-    }else{
+    } else {
         return NULL;
     }
-    
 }
 /**
  * Check if a user is an admi
@@ -161,22 +164,23 @@ function GetError($id){
  * @param string $id
  * @return array 
  */
-function IsAdmin($id){
+function IsAdmin($id)
+{
     $array = array(
         "116367054307199743956",
         "104684477093479828612"
     );
-    if(in_array($id,$array)){
+    if (in_array($id, $array)) {
         $admin = array(
-            "admin"=>true,
-            "badge"=>'<span  title="Administrator" class="text-center badge badge-admin">Admin</span>',
-            "color"=>'#0099ff'
+            "admin" => true,
+            "badge" => '<span  title="Administrator" class="text-center badge badge-admin">Admin</span>',
+            "color" => '#0099ff'
         );
         return $admin;
-    }else{
+    } else {
         $admin = array(
-            "admin"=>false,
-            "badge"=>null
+            "admin" => false,
+            "badge" => null
         );
         return $admin;
     }
@@ -187,14 +191,15 @@ function IsAdmin($id){
  * @param string $id
  * @return boolean 
  */
-function IsSuperAdmin($id){
+function IsSuperAdmin($id)
+{
     $array = array(
-        "116367054307199743956",
-        "104684477093479828612"
+        "116367054307199743956-",
+        "104684477093479828612-"
     );
-    if(in_array($id,$array)){
+    if (in_array($id, $array)) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -206,7 +211,8 @@ function IsSuperAdmin($id){
  * @param boolean $usingemail
  * @return array 
  */
-function IsNsd($identifier,$usingemail){
+function IsNsd($identifier, $usingemail)
+{
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
     $host = $_SERVER['SERVER_NAME'];
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
@@ -214,25 +220,25 @@ function IsNsd($identifier,$usingemail){
         "apps.nsd.org",
         "nsd.org"
     );
-    if(!$usingemail){
+    if (!$usingemail) {
         $query = SQLWrapper()->prepare("SELECT Email FROM Users WHERE gid = :gid");
-        $query->execute([":gid"=>$identifier]);
+        $query->execute([":gid" => $identifier]);
         $email = $query->fetch()['Email'];
-    }else{
+    } else {
         $email = $identifier;
     }
     $domain = substr(strrchr($email, "@"), 1);
-    if(in_array($domain,$array)){
+    if (in_array($domain, $array)) {
         $array = array(
-            "nsd"=>true,
-            "badge"=>'<span  title="Verifed NSD User" class="text-center badge badge-nsd">NSD</span>',
-            "color"=>'#0099ff'
+            "nsd" => true,
+            "badge" => '<span  title="Verifed NSD User" class="text-center badge badge-nsd">NSD</span>',
+            "color" => '#0099ff'
         );
         return $array;
-    }else{
+    } else {
         $array = array(
-            "nsd"=>false,
-            "badge"=>null
+            "nsd" => false,
+            "badge" => null
         );
         return $array;
     }
@@ -243,24 +249,27 @@ function IsNsd($identifier,$usingemail){
  * @param string $stamp
  * @return string 
  */
-function FormatDate($stamp){
-    $date = date("n/j/Y g:i A",$stamp);
+function FormatDate($stamp)
+{
+    $date = date("n/j/Y g:i A", $stamp);
     return $date;
 }
 /**
  * Visible Error Alert For  Returning HTML
  * @param string $msg
  */
-function AlertError($msg){
-    $script = '<script> AlertError("'.$msg.'") </script>';
+function AlertError($msg)
+{
+    $script = '<script> AlertError("' . $msg . '") </script>';
     echo $script;
 }
 /**
  * Visible Success Alert For Returning HTML
  * @param string $msg
  */
-function AlertSuccess($msg){
-    $script = '<script> AlertSuccess("'.$msg.'") </script>';
+function AlertSuccess($msg)
+{
+    $script = '<script> AlertSuccess("' . $msg . '") </script>';
     echo $script;
 }
 /**
@@ -270,14 +279,15 @@ function AlertSuccess($msg){
  * @param string $gid
  * @return boolean 
  */
-function ApplyRestrictions($restrictions,$gid){
+function ApplyRestrictions($restrictions, $gid)
+{
     $restrict = json_encode($restrictions);
-    try{
+    try {
         $query = SQLWrapper()->prepare("UPDATE Users SET Restrictions = :res WHERE gid = :gid");
-        $query->execute([":res"=>$restrict,"gid"=>$gid]);
+        $query->execute([":res" => $restrict, "gid" => $gid]);
         return true;
-    }catch (PDOException $e){
-        SendError("MySQL Error (KMS)",$e->getMessage());
+    } catch (PDOException $e) {
+        SendError("MySQL Error (KMS)", $e->getMessage());
         return false;
     }
 }
@@ -287,16 +297,26 @@ function ApplyRestrictions($restrictions,$gid){
  * @param string $gid
  * @return array 
  */
-function FetchRestrictions($gid){
-        $query = SQLWrapper()->prepare("SELECT Restrictions FROM Users WHERE gid = :gid");
-        $query->execute(["gid"=>$gid]);
-        $data = $query->fetch();
-        if($data==null){
-            return null;
-        }else{
-            $restrictions = json_decode($data['Restrictions'],true);
+function FetchRestrictions($gid)
+{
+    $query = SQLWrapper()->prepare("SELECT Restrictions FROM Users WHERE gid = :gid");
+    $query->execute(["gid" => $gid]);
+    $data = $query->fetch();
+    if ($data == null) {
+        return null;
+    } else {
+        if (IsSuperAdmin($gid)) {
+            $restrictions  = array(
+                "UserNameChange" => false,
+                "BioChange" => false,
+                "PictureChange" => false
+            );
             return $restrictions;
-        }     
+        } else {
+            $restrictions = json_decode($data['Restrictions'], true);
+            return $restrictions;
+        }
+    }
 }
 /**
  * Update a users email,photo,realname when they login
@@ -307,20 +327,21 @@ function FetchRestrictions($gid){
  * @param string $id
  * @return boolean
  */
-function UpdateGInfo($name,$picture,$email,$id){
-    try{
-        if(FetchRestrictions($id)['PictureChange']){
+function UpdateGInfo($name, $picture, $email, $id)
+{
+    try {
+        if (FetchRestrictions($id)['PictureChange']) {
             $query = SQLWrapper()->prepare("UPDATE Users SET RealName = :name, Email = :email WHERE gid = :gid");
-            $query->execute([":name"=>$name,":email"=>$email,":gid"=>$id]);
-        }else{
+            $query->execute([":name" => $name, ":email" => $email, ":gid" => $id]);
+        } else {
             $query = SQLWrapper()->prepare("UPDATE Users SET RealName = :name, Picture = :picture, Email = :email WHERE gid = :gid");
-        $query->execute([":name"=>$name,"picture"=>$picture,":email"=>$email,":gid"=>$id]);
+            $query->execute([":name" => $name, "picture" => $picture, ":email" => $email, ":gid" => $id]);
         }
-        
+
         return true;
-    } catch (PDOException $e){
+    } catch (PDOException $e) {
         return false;
-        SendError("MySQL Error",$e->getMessage());
+        SendError("MySQL Error", $e->getMessage());
     }
 }
 /**
@@ -329,18 +350,19 @@ function UpdateGInfo($name,$picture,$email,$id){
  * @param string $string
  * @return string 
  */
-function UserNameValidate($string){
+function UserNameValidate($string)
+{
     if (IsEmpty($string)) {
         return "You must enter a value for the user name.";
     } else if (strlen($string) > 30) {
         return "Usernames must be less than 30 characters.";
     } else if (strlen($string) < 3) {
         return "Usernames must be greater than 3 characters.";
-    }else if(preg_match('[\s]',$string)){
+    } else if (preg_match('[\s]', $string)) {
         return "Spaces are not allowed in usernames.";
     } else if (!UserNameReady($string)) {
         return "Sorry, this username is already taken";
-    }else{
+    } else {
         return null;
     }
 }

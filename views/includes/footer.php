@@ -1,7 +1,7 @@
 <footer>
   <div class="page-footer" style="color:white">
     <div class="footer-text">
-      <a href="/contact/">Feedback</a> &bull; <a href="/privacy-policy/">Privacy Policy</a> &bull; <a href="/tos/">TOS</a> &bull; <a href="/credits/">Credits</a>
+      <a href="/contact/">Contact</a> &bull; <a href="/privacy-policy/">Privacy Policy</a> &bull; <a href="/tos/">TOS</a> &bull; <a href="/credits/">Credits</a>
       <br>
       <p class="copyright">Copyright &copy; 2020 KMS Cultural Night &bull; Site Designed And Buit By Jordan Tucker</p>
     </div> 

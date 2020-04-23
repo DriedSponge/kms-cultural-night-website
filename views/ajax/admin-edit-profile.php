@@ -153,8 +153,7 @@ if (isset($_POST['edit2'])) {
                         $name = UserInfo($_POST['gid'])['UserName'];
                     }
                     if (IsEmpty($_POST['bio'])) {
-                        $bio = "This user has no bio, encourage them to make one!";
-                        $Msg['BlankBio'] = "This user has no bio, encourage them to make one!";
+                        $bio = NULL;
                     } else if (strlen($_POST['bio']) > 600) {
                         $Msg['bioErr'] = "The bio must be less than 600 characters.";
                     } else {

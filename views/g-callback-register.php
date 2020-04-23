@@ -77,7 +77,7 @@ if ($UserData["verified_email"]) {
                                     }
                                 })
 
-                                $("#g-register-form").submit(function(e){
+                                $("#g-register-form").submit(function(e) {
                                     e.preventDefault();
                                     Loading(true, '#loading');
                                     $("#g-register-form").hide();
