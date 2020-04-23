@@ -21,7 +21,6 @@
                         <p>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></p>
                         <p>The <a href="https://www.creative-tim.com/product/argon-design-system">Argon Design System</a> by <a href="https://www.creative-tim.com" title="Creative Tim">Creative Tim</a></p>
                         <p>The <a href="https://github.com/bramus/router">Bramus PHP Router</a> by <a href="https://github.com/bramus">Bramus</a></p>
-                        <p>The <a href="https://developers.google.com/apis-explorer">GoogleAPI</a></p>
                         <p><a href="https://fontawesome.com/icons?d=gallery">Font Awesome Icons</a></p>
                     </div>
                 </div>
