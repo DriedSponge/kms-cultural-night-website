@@ -194,8 +194,8 @@ function IsAdmin($id)
 function IsSuperAdmin($id)
 {
     $array = array(
-        "116367054307199743956-",
-        "104684477093479828612-"
+        "116367054307199743956",
+        "104684477093479828612"
     );
     if (in_array($id, $array)) {
         return true;
@@ -364,5 +364,31 @@ function UserNameValidate($string)
         return "Sorry, this username is already taken";
     } else {
         return null;
+    }
+}
+/**
+ * Ban a user
+ *
+ * @param string $gid
+ * @param string $AdminID
+ * @param string $Reason
+ * @return string 
+ */
+function BanUser($gid, $AdminID, $Reason)
+{
+    if (!IsBanned($gid)['banned']) {
+        try {
+
+            $UserInfo = json_encode(UserInfo($gid));
+            $AdminInfo = json_encode(UserInfo($AdminID));
+            $query = SQLWrapper()->prepare("INSERT INTO Bans (gid,AdminID,Reason,UserInfo,AdminInfo) VALUES (?,?,?,?,?)");
+            $query->execute([$gid,$AdminID,$Reason,$UserInfo,$AdminInfo]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+            SendError("MySQL Error", $e->getMessage());
+        }
+    } else {
+        return false;
     }
 }

@@ -72,8 +72,10 @@ $data = $user->fetch();
                                 <h2>Admin Actions</h2>
                                 <div class="row" style="justify-content: center">
                                     <?php if (!$ban['banned']) { ?>
-                                        <button class="btn btn-danger">Ban</button>
+                                        <script src="<?= htmlspecialchars($dir); ?>admin-scripts/ban.js"></script>
+                                        <button onclick="Ban('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-danger">Ban</button>
                                     <?php } else { ?>
+                                        <script src="<?= htmlspecialchars($dir); ?>admin-scripts/unban.js"></script>
                                         <button class="btn btn-danger">Unban</button>
                                     <?php } ?>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/restrictions.js"></script>
