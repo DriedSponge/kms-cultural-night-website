@@ -212,6 +212,8 @@ color: white;
     font-size: 2em;
     font-family: 'Roboto';
     text-align: center;
+    text-transform: unset;
+
 }
 .modal-body h1{
     color: black;

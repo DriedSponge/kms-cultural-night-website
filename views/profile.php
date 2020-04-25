@@ -76,7 +76,7 @@ $data = $user->fetch();
                                         <button onclick="Ban('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-danger">Ban</button>
                                     <?php } else { ?>
                                         <script src="<?= htmlspecialchars($dir); ?>admin-scripts/unban.js"></script>
-                                        <button class="btn btn-danger">Unban</button>
+                                        <button onclick="UnBan('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-danger">Unban</button>
                                     <?php } ?>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/restrictions.js"></script>
                                     <button onclick="EditRestrictions('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-warning">Edit Restrictions</button>

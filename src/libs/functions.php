@@ -372,7 +372,7 @@ function UserNameValidate($string)
  * @param string $gid
  * @param string $AdminID
  * @param string $Reason
- * @return string 
+ * @return boolean 
  */
 function BanUser($gid, $AdminID, $Reason)
 {
@@ -391,4 +391,29 @@ function BanUser($gid, $AdminID, $Reason)
     } else {
         return false;
     }
+}
+/**
+ * u=Unban a user
+ *
+ * @param string $gid
+ * @return boolean 
+ */
+function UnBanUser($gid)
+{
+    if (IsBanned($gid)['banned']) {
+        try {
+            $query = SQLWrapper()->prepare("DELETE FROM Bans WHERE gid = ?");
+            $query->execute([$gid]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+            SendError("MySQL Error", $e->getMessage());
+        }
+    } else {
+        return false;
+    }
+}
+function v($var)
+{
+    return htmlspecialchars($var);
 }

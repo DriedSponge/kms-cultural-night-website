@@ -134,7 +134,7 @@ $router->all('/profile-id/{id}', function ($id) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "config.php";
     $user = UserInfo($id);
-    header("Location: /profile/".$user['UserName']);
+    header("Location: /profile/" . $user['UserName']);
 });
 $router->all('/account-settings/', function () {
     require_once "GoogleAPI/vendor/autoload.php";
@@ -169,7 +169,7 @@ $router->all('/new-post/{type}', function ($type) {
             $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
             $host = $_SERVER['SERVER_NAME'];
             $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
-            include(__DIR__ . '/views/new-post-'.$type.'.php');
+            include(__DIR__ . '/views/new-post-' . $type . '.php');
         } else {
             header("Location: /new-post/");
         }
@@ -193,6 +193,20 @@ $router->all('/credits/', function () {
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     include(__DIR__ . '/views/credits.php');
 });
+
+$router->all('/contact/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    if (isset($_SESSION['UserName'])) {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+        $host = $_SERVER['SERVER_NAME'];
+        $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+        include(__DIR__ . '/views/contact.php');
+    } else {
+        header("Location: /login/");
+    }
+});
+
 $router->all('/admin-scripts/{script}', function ($script) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "config.php";
