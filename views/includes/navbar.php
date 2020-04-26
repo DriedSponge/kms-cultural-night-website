@@ -11,11 +11,9 @@
 
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item" id="homelink"><a class="nav-link" href="/home/">Home</a></li>
-                    <li class="nav-item" id="foodlink"><a class="nav-link" href="/food/">Food</a></li>
-                    <li class="nav-item" id="musiclink"><a class="nav-link" href="/music/">Music</a></li>
-                    <li class="nav-item" id="sportslink"><a class="nav-link" href="/sports/">Sports</a></li>
-                    <li class="nav-item" id="gatheringslink"><a class="nav-link" href="/gatherings/">Gatherings</a></li>
-                    <li class="nav-item" id="otherlink"><a class="nav-link" href="/other/">Other</a></li>
+                    <li class="nav-item" id="foodlink"><a class="nav-link" href="/videos/">Videos</a></li>
+                    <li class="nav-item" id="musiclink"><a class="nav-link" href="/photos/">Photos</a></li>
+                    <li class="nav-item" id="sportslink"><a class="nav-link" href="/other/">Other</a></li>
                 </ul>
 
                 <?php

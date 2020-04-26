@@ -27,42 +27,46 @@ $restrictions = FetchRestrictions($_SESSION['gid']);
                     <div class="content-box">
                         <h1>Contact</h1>
                         <script>
-                            $("#conatact-form").submit(function(e) {
-                                $("#conatact-form").hide();
-                                Loading(true, "#loading")
-                                var c = $("#c").val();
-                                var msg = $("#msg").val();
-                                $.post("<?= v($dir); ?>ajax/contact.php". {
-                                        c: c,
-                                        msg: msg
-                                    })
-                                    .done(function(data) {
-                                        Loading(false, "#loading")
-                                        if (data.success) {
-                                            $("#success-mesage").removeClass("d-none")
-                                        } else {
-                                            $("#conatact-form").show();
-                                            if (data.SysErr) {
-                                                AlertError(data.Msg);
-                                            }else{
-                                                if(data.MsgErr){
-                                                    InValidate("#msg",data.MsgErr)
-                                                }else{
-                                                    Validate("#msg",data.MsgErr)
+                            $(document).ready(function() {
+                                $("#conatact-form").submit(function(e) {
+                                    e.preventDefault()
+                                    $("#conatact-form").hide();
+                                    Loading(true, "#loading")
+                                    var c = $("#c").val();
+                                    var msg = $("#msg").val();
+                                    $.post("<?= v($dir); ?>ajax/contact.php", {
+                                            c: c,
+                                            msg: msg,
+                                            contact: 1
+                                        })
+                                        .done(function(data) {
+                                            Loading(false, "#loading")
+                                            if (data.success) {
+                                                $("#success-mesage").removeClass("d-none")
+                                            } else {
+                                                $("#conatact-form").show();
+                                                if (data.SysErr) {
+                                                    AlertError(data.Msg);
+                                                } else {
+                                                    if (data.MsgErr) {
+                                                        InValidate("#msg", data.MsgErr)
+                                                    } else {
+                                                        Validate("#msg", data.MsgErr)
+                                                    }
+                                                    if (data.CErr) {
+                                                        InValidate("#c", data.CErr)
+                                                    } else {
+                                                        Validate("#c", data.CErr)
+                                                    }
                                                 }
-                                                if(data.CErr){
-                                                    InValidate("#c",data.CErr)
-                                                }else{
-                                                    Validate("#c",data.CErr)
-                                                }
-                                            }
 
-                                        }
-                                    })
+                                            }
+                                        })
+                                })
                             })
                         </script>
                         <div id="loading"></div>
-                        <div id="success-ban-mesage" class="d-none">
+                        <div id="success-mesage" class="d-none">
                             <div class="modal-body">
                                 <div class="alert alert-success text-center" role="alert">
                                     <span><b>Success!</b><br><span id="success_message_text">Your message has been sent!</span></span>
@@ -75,17 +79,18 @@ $restrictions = FetchRestrictions($_SESSION['gid']);
                                 <select id="c" feedback="#c-f" class="form-control form-control-alternative">
                                     <option value="General Contact">General Contact</option>
                                     <option value="Question">Question</option>
-                                    <option>Site Feedback</option>
-                                    <option>Bug Report</option>
-                                    <option>Support</option>
+                                    <option value="Site Feedback">Site Feedback</option>
+                                    <option value="Bug Report">Bug Report</option>
+                                    <option value="Support">Support</option>
                                 </select>
-                                <div class="c-f"></div>
+                                <div id="c-f"></div>
                             </div>
                             <div class="form-group">
                                 <label>Message</label>
                                 <textarea feedback="#msg-f" id="msg" maxlength="1500" placeholder="Enter your message here..." rows="8" class="form-control form-control-alterantive paragraph"></textarea>
                                 <div id="msg-f"></div>
                             </div>
+                            <button type="submit" style="width: 100%" class="btn btn-success">Send Message</button>
                         </form>
                     </div>
                 <?php } else { ?>
