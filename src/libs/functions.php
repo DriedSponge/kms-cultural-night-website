@@ -417,3 +417,18 @@ function v($var)
 {
     return htmlspecialchars($var);
 }
+function dir_is_empty($dir) {
+    $handle = opendir($dir);
+    while (false !== ($entry = readdir($handle))) {
+      if ($entry != "." && $entry != "..") {
+        closedir($handle);
+        return FALSE;
+      }
+    }
+    closedir($handle);
+    return TRUE;
+  }
+
+  function CanPostImage($gid){
+      $query 
+  }

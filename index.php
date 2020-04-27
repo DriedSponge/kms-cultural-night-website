@@ -206,7 +206,14 @@ $router->all('/contact/', function () {
         header("Location: /login/");
     }
 });
-
+$router->all('/pimg/{postid}/{filename}', function ($postid,$filename) {
+    $file_ext = explode('.',$filename);
+    $file_ext = strtolower(end($file_ext));
+    header("Content-type:image/$file_ext");
+    include("img/post/$postid/$filename");
+   
+    
+});
 $router->all('/admin-scripts/{script}', function ($script) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "config.php";

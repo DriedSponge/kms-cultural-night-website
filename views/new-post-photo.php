@@ -3,6 +3,23 @@ $user = SQLWrapper()->prepare("SELECT Name,Picture,Bio,RealName FROM Users WHERE
 $user->execute([":gid" => $_SESSION['gid']]);
 $data = $user->fetch();
 $restrictions = FetchRestrictions($_SESSION['gid']);
+if (isset($_SESSION['postimgid'])) {
+    $idir = 'img/post/' . $_SESSION['postimgid'];
+    if (file_exists($idir)) {
+        if (dir_is_empty($idir)) {
+            rmdir($idir);
+            unset($_SESSION['postimgid']);
+            $upload = true;
+        } else {
+            $upload = false;
+        }
+    } else {
+        $upload = true;
+        unset($_SESSION['postimgid']);
+    }
+} else {
+    $upload = true;
+}
 ?>
 <html>
 
@@ -31,74 +48,50 @@ $restrictions = FetchRestrictions($_SESSION['gid']);
                 ?>
                     <div class="content-box">
                         <h1>New Image Post</h1>
-                        <h2 class="text-center">Here you can upload a maximum of five images per post to share</h2>
-                        <script>
-                            $(document).ready(function() {
-                                $("#post-image").submit(function(e) {
-                                    e.preventDefault()
-                                    $.ajax({
-                                        url: '<?=v($dir);?>ajax/image-post.php',
-                                        data: new FormData(this),
-                                        processData: false,
-                                        contentType: false,
-                                        type: 'POST',
-                                        success: function(data) {
-                                            Loading(false, "#loading")
-                                            $("#add-duck").show()
-                                            if (data.success) {
-                                                
-                                            } else {
-                                                if (data.SysErr) {
-                                                    AlertError(data.Msg);
+                        <?php if ($upload) { ?>
+                            <h2 class="text-center">Here you can upload a maximum of five images per post.</h2>
+                            <script>
+                                $(document).ready(function() {
+                                    $("#post-image").submit(function(e) {
+                                        e.preventDefault()
+                                        $.ajax({
+                                            url: '<?= v($dir); ?>ajax/image-post.php',
+                                            data: new FormData(this),
+                                            processData: false,
+                                            contentType: false,
+                                            type: 'POST',
+                                            success: function(data) {
+                                                Loading(false, "#loading")
+                                                $("#add-duck").show()
+                                                if (data.success) {
+                                                    AlertSuccess("dust");
                                                 } else {
-                                                    if(data.FErr){
-                                                        InValidate("#files",data.FErr)
-                                                    }else{
-                                                        Validate("#files")
-                                                    }
-                                                    if(data.CErr){
-                                                        InValidate("#c",data.CErr)
-                                                    }else{
-                                                        Validate("#c")
-                                                    }
-                                                    if(data.CapErr){
-                                                        InValidate("#caption",data.CapErr)
-                                                    }else{
-                                                        Validate("#caption")
+                                                    if (data.SysErr) {
+                                                        AlertError(data.Msg);
+                                                    } else {
+                                                        if (data.FErr) {
+                                                            InValidate("#files", data.FErr)
+                                                        } else {
+                                                            Validate("#files")
+                                                        }
+
                                                     }
                                                 }
                                             }
-                                        }
-                                    });
+                                        });
+                                    })
                                 })
-                            })
-                        </script>
-                        <form id="post-image">
-                            <div class="form-group">
-                                <label>Upload Image</label>
-                                <input feedback="#files-f" class="form-control" type="file" accept="image/png,image/jpeg" name="files[]" id="files" multiple max="5">
-                                <div id="files-f"></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Category</label>
-                                <select class="form-control form-control-alternative" feedback="#c-f" id="c" name="c">
-                                    <option value="Food">Food</option>
-                                    <option value="Music">Music</option>
-                                    <option value="Sports">Sports</option>
-                                    <option value="Gatherings">Gatherings</option>
-                                    <option value="Other" selected>Other</option>
-                                </select>
-                                <div id="c-f"></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Caption for the images</label>
-                                <textarea feedback="#caption-f" name="caption" id="caption" class="form-control form-control-alternative" placeholder="Please enter a caption for the images" rows="5" maxlength="1000"></textarea>
-                                <div id="caption-f"></div>
-                            
-                            </div>
-                            <input name="post" class="d-none">
-                            <button type="submit" style="width:100%" class="btn btn-success">Submit For Approval</button>
-                        </form>
+                            </script>
+                            <form id="post-image">
+                                <div class="form-group">
+                                    <label>Upload Image(s)</label>
+                                    <input feedback="#files-f" class="form-control" type="file" accept="image/png,image/jpeg" name="files[]" id="files" multiple max="5">
+                                    <div id="files-f"></div>
+                                </div>
+                                <input name="upload" class="d-none">
+                                <button type="submit" style="width:100%" class="btn btn-info">Upload Image(s)</button>
+                            </form>
+                        <?php } ?>
                     </div>
                 <?php
                 }
