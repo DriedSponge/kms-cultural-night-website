@@ -117,12 +117,23 @@ $data = $user->fetch();
                                         </div>
                                     </div>
                                     <div class="col indexcol">
-
                                         <div class="card card-border">
                                             <div class="card-body">
+                                                <?php
+                                                    $query3 = SQLWrapper()->prepare("SELECT PostID,Approved FROM ImagePost WHERE gid= :gid AND Deleted = 0");
+                                                    $query3->execute([":gid"=>$data['gid']]);
+                                                    $phocount = $query3->rowCount();
+                                                    $phodata = $query3->fetchAll();
+                                                    foreach($phodata as $post){
+                                                        $app = json_decode($post['Approved'],true);
+                                                        if($app['Status']==0){
+                                                            $phocount = $phocount-1;
+                                                        }
+                                                    }
+                                                ?>
                                                 <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/gallery.png" alt="Photo Post" class="img-fluid lozad" style="max-height:100px;" />
                                                 <h1>Photo Post</h1>
-                                                <h2 style="font-size: 3em">0</h2>
+                                                <h2 style="font-size: 3em"><?=v($phocount);?></h2>
                                             </div>
                                         </div>
                                     </div>

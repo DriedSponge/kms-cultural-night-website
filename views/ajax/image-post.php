@@ -9,8 +9,8 @@ if (isset($_POST['upload'])) {
 
     if (isset($_SESSION['UserName'])) {
         if (!IsBanned($_SESSION['gid'])['banned']) {
-            
-            if ($upload) {
+
+            if (CanPostImage($_SESSION['gid'])) {
 
                 if (!empty($_FILES['files']['name'][0])) {
                     $files = $_FILES['files'];
@@ -53,10 +53,11 @@ if (isset($_POST['upload'])) {
                                 rmdir($idir);
                             }
                         }
-                        if(!isset($Msg['FErr']) && isset($Msg['success'])){
+                        if (!isset($Msg['FErr']) && isset($Msg['success'])) {
                             //die(print_r($uploaded));
-                            $query = SQLWrapper()->prepare("INSERT INTO ImagePost (gid,Images,PostID) VALUES (?,?,?,?)"); 
-                            $query->execute([$_SESSION['gid'],json_encode($uploaded),$postid]);
+                            $query = SQLWrapper()->prepare("INSERT INTO ImagePost (gid,Images,PostID) VALUES (?,?,?)");
+                            $query->execute([$_SESSION['gid'], json_encode($uploaded), $postid]);
+                            $Msg['success'] = true;
                         }
                     } else {
                         $Msg['FErr'] = "There is a maximum of five files allowed per post.";
@@ -70,10 +71,96 @@ if (isset($_POST['upload'])) {
             }
         } else {
             $Msg['SysErr'] = true;
-            $Msg['Msg'] = "You are banned! Please use the ban appeal form!";
+            $Msg['Msg'] = "You are banned!";
         }
     } else {
         $Msg['SysErr'] = true;
+        $Msg['Msg'] = "Not logged in!";
+    }
+    die(json_encode($Msg));
+}
+if (isset($_POST['complete'])) {
+    header("Content-type: application/json");
+    $Msg = array(
+        "success" => false,
+        "Msg" => "Something went wrong",
+        "SysErr" => false
+    );
+    if (isset($_SESSION['UserName'])) {
+        if (!IsBanned($_SESSION['gid'])['banned']) {
+            if (isset($_POST['caption']) && isset($_POST['category']) && isset($_POST['title']) && isset($_POST['pid'])) {
+                if (GetPostOwner($_POST['pid']) == $_SESSION['gid']) {
+                    if (!IsValidPostCategory($_POST['category'])) {
+                        $Msg['CErr'] = "Invalid category.";
+                    }
+                    if (IsEmpty($_POST['caption'])) {
+                        $Msg['CapErr'] = "Please enter a caption";
+                    } else if (strlen($_POST['caption'] > 1000)) {
+                        $Msg['CapErr'] = "Please keep your caption under 1000 characters.";
+                    }      
+                    if(IsEmpty($_POST['title'])){
+                        $Msg['TErr'] = "A title is required.";
+                    }else if (strlen($_POST['caption'] > 50)) {
+                        $Msg['TErr'] = "Please keep your title under 50 characters.";
+                    }             
+                    if (!isset($Msg['TErr']) && !isset($Msg['CErr']) && !isset($Msg['CapErr'])) {
+                        try {
+                            $approvalstatus = array("Status" => 0, "Message" => "Awaiting Approval");
+                            $query = SQLWrapper()->prepare("UPDATE ImagePost SET Title = :title, Category=:category,Caption=:caption,Approved=:a WHERE PostID = :pid");
+                            $query->execute([":title" => $_POST['title'], ":category" => $_POST['category'], ":caption" => $_POST['caption'], ":a" => json_encode($approvalstatus), ":pid" => $_POST['pid']]);
+                            $Msg['success'] = true;
+                        } catch (PDOException $e) {
+                            $Msg['SysErr'] = true;
+                            $Msg['Msg'] = "There was an error saving your post to the databse. Please try again later.";
+                            SendError("MySQL Error", $e->getMessage());
+                        }
+                    }
+                } else {
+                    $Msg['SysErr'] = true;
+                    $Msg['Msg'] = "You are not the owner of this post.";
+                }
+            } else {
+                $Msg['SysErr'] = true;
+                $Msg['Msg'] = "Invalid post values, try refreshing the page.";
+            }
+        } else {
+            $Msg['SysErr'] = true;
+            $Msg['Msg'] = "You are banned!";
+        }
+    } else {
+        $Msg['SysErr'] = true;
+        $Msg['Msg'] = "Not logged in!";
+    }
+    die(json_encode($Msg));
+}
+
+if (isset($_POST['cancel'])) {
+    header("Content-type: application/json");
+    $Msg = array(
+        "success" => false,
+        "Msg" => "Something went wrong",
+        "SysErr" => false
+    );
+    if (isset($_SESSION['UserName'])) {
+        if (!IsBanned($_SESSION['gid'])['banned']) {
+            if (isset($_POST['pid'])) {
+                if (GetPostOwner($_POST['pid']) == $_SESSION['gid']) {       
+                        if(DeleteImagePost($_POST['pid'])){
+                            $Msg['success'] = true;
+                            $Msg['Msg'] = "The post and the images associated with it have been deleted!";
+                        }else{
+                            $Msg['Msg'] = "There was an error canceling your post from the databse. Please try again later.";
+                        }
+                } else {
+                    $Msg['Msg'] = "You are not the owner of this post.";
+                }
+            } else {
+                $Msg['Msg'] = "Invalid post values, try refreshing the page.";
+            }
+        } else {
+            $Msg['Msg'] = "You are banned!";
+        }
+    } else {
         $Msg['Msg'] = "Not logged in!";
     }
     die(json_encode($Msg));

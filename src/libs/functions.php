@@ -1,5 +1,7 @@
 <?php
 
+use Google\Auth\CacheTrait;
+
 /**
  * Send an error to discord
  *
@@ -382,7 +384,7 @@ function BanUser($gid, $AdminID, $Reason)
             $UserInfo = json_encode(UserInfo($gid));
             $AdminInfo = json_encode(UserInfo($AdminID));
             $query = SQLWrapper()->prepare("INSERT INTO Bans (gid,AdminID,Reason,UserInfo,AdminInfo) VALUES (?,?,?,?,?)");
-            $query->execute([$gid,$AdminID,$Reason,$UserInfo,$AdminInfo]);
+            $query->execute([$gid, $AdminID, $Reason, $UserInfo, $AdminInfo]);
             return true;
         } catch (PDOException $e) {
             return false;
@@ -406,8 +408,8 @@ function UnBanUser($gid)
             $query->execute([$gid]);
             return true;
         } catch (PDOException $e) {
-            return false;
             SendError("MySQL Error", $e->getMessage());
+            return false;
         }
     } else {
         return false;
@@ -417,18 +419,78 @@ function v($var)
 {
     return htmlspecialchars($var);
 }
-function dir_is_empty($dir) {
+function dir_is_empty($dir)
+{
     $handle = opendir($dir);
     while (false !== ($entry = readdir($handle))) {
-      if ($entry != "." && $entry != "..") {
-        closedir($handle);
-        return FALSE;
-      }
+        if ($entry != "." && $entry != "..") {
+            closedir($handle);
+            return FALSE;
+        }
     }
     closedir($handle);
     return TRUE;
-  }
-
-  function CanPostImage($gid){
-      $query 
-  }
+}
+function delete_directory($dirname)
+{
+    if (is_dir($dirname))
+        $dir_handle = opendir($dirname);
+    if (!$dir_handle)
+        return false;
+    while ($file = readdir($dir_handle)) {
+        if ($file != "." && $file != "..") {
+            if (!is_dir($dirname . "/" . $file))
+                unlink($dirname . "/" . $file);
+            else
+                delete_directory($dirname . '/' . $file);
+        }
+    }
+    closedir($dir_handle);
+    rmdir($dirname);
+    return true;
+}
+function CanPostImage($gid)
+{
+    $query = SQLWrapper()->prepare("SELECT postid,Images FROM ImagePost WHERE gid = :gid AND  Title  IS NULL AND  Category  IS NULL AND  Caption  IS NULL");
+    $query->execute([":gid" => $gid]);
+    $data = $query->fetch();
+    if ($data == null) {
+        return true;
+    } else {
+        if ($data['Images'] == null) {
+            $del = SQLWrapper()->prepare("DELETE FROM ImagePost WHERE PostID = :id");
+            $del->execute([":id" => $data['postid']]);
+            return false;
+        } else {
+            return false;
+        }
+    }
+}
+function GetPostOwner($pid)
+{
+    $query = SQLWrapper()->prepare("SELECT gid FROM ImagePost WHERE PostID = :pid ");
+    $query->execute([":pid" => $pid]);
+    $data = $query->fetch();
+    return $data['gid'];
+}
+function IsValidPostCategory($string)
+{
+    $Categories = array("Food", "Music", "Sports", "Gatherings", "Other");
+    if (in_array($string, $Categories)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+function DeleteImagePost($pid)
+{
+    try {
+        $query = SQLWrapper()->prepare("DELETE FROM ImagePost WHERE PostID = :pid");
+        $query->execute([":pid" => $pid]);
+        delete_directory("img/post/$pid");
+        return true;
+    } catch (PDOException $e) {
+        SendError("MySQL Error", $e->getMessage());
+        return false;
+    }
+}
