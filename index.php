@@ -1,9 +1,9 @@
 <?php
+date_default_timezone_set("America/Los_Angeles");
 
 require __DIR__ . "/Bramus/Router/Router.php";
 require_once __DIR__ . "/databases/connect.php";
 require_once __DIR__ . "/src/libs/functions.php";
-
 
 
 $router = new \Bramus\Router\Router();
@@ -206,13 +206,30 @@ $router->all('/contact/', function () {
         header("Location: /login/");
     }
 });
-$router->all('/pimg/{postid}/{filename}', function ($postid,$filename) {
-    $file_ext = explode('.',$filename);
+$router->all('/admin/{page}', function ($page) {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    if (isset($_SESSION['UserName'])) {
+        if (IsAdmin($_SESSION['gid'])['admin']) {
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+            $host = $_SERVER['SERVER_NAME'];
+            $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+            include(__DIR__ . "/views/admin-$page.php");
+        } else {
+            header("Location: /home/");
+        }
+    } else {
+        header("Location: /login/");
+    }
+});
+$router->all('/admin/', function () {
+    header("Location: /admin/home/");
+});
+$router->all('/pimg/{postid}/{filename}', function ($postid, $filename) {
+    $file_ext = explode('.', $filename);
     $file_ext = strtolower(end($file_ext));
     header("Content-type:image/$file_ext");
     include("img/post/$postid/$filename");
-   
-    
 });
 $router->all('/admin-scripts/{script}', function ($script) {
     require_once "GoogleAPI/vendor/autoload.php";
@@ -226,5 +243,21 @@ $router->all('/admin-scripts/{script}', function ($script) {
     } else {
         echo "Unauthorized";
     }
+});
+$router->all('/photos/{postid}', function ($postid) {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    include(__DIR__ . '/views/photo-post.php');
+});
+$router->all('/privacy-and-terms/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    include(__DIR__ . '/views/privacyterms.php');
 });
 $router->run();

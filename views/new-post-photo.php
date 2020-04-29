@@ -142,11 +142,13 @@ if (isset($_SESSION['postimgid'])) {
                                             var caption = $("#cap").val()
                                             var category = $("#c").val()
                                             var title = $("#t").val()
+                                            var cul = $("#cul").val()
                                             $.post('<?= v($dir); ?>ajax/image-post.php', {
                                                 complete: 1,
                                                 caption: caption,
                                                 category: category,
                                                 title: title,
+                                                cul: cul,
                                                 pid: '<?=v($data['PostID']);?>'
                                             })
                                             .done(function(data){
@@ -175,6 +177,11 @@ if (isset($_SESSION['postimgid'])) {
                                                             InValidate("#c",data.CErr)
                                                         }else{
                                                             Validate("#c",data.CErr)
+                                                        }
+                                                        if(data.CulErr){
+                                                            InValidate("#cul",data.CulErr)
+                                                        }else{
+                                                            Validate("#cul",data.CulErr)
                                                         }
                                                     }
                                                 }
@@ -216,12 +223,17 @@ if (isset($_SESSION['postimgid'])) {
                                         <div id="c-f"></div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Post Title</label>
+                                        <label>Title</label>
                                         <input feedback="#t-f" id="t" maxlength="50" placeholder="Enter a title for this post" class="form-control form-control-alternative">
                                         <div id="t-f"></div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Post Caption</label>
+                                        <label>Culture/Region</label>
+                                        <input feedback="#cul-f" id="cul" maxlength="50" placeholder="What Culture/Region/Area is this from?" class="form-control form-control-alternative">
+                                        <div id="cul-f"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Caption</label>
                                         <textarea rows="5" feedback="#cap-f" id="cap" maxlength="1000" placeholder="Enter a breif caption for this post." class="form-control form-control-alternative"></textarea>
                                         <div id="cap-f"></div>
                                     </div>

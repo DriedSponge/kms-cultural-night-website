@@ -494,3 +494,33 @@ function DeleteImagePost($pid)
         return false;
     }
 }
+function PostType($pid)
+{
+    $type = substr($pid, 0, 2);
+    if($type="IP"){
+        $t = "ImagePost";
+    }else if($type="VP"){
+        $t = "VideoPost";
+    }else{
+        $t = "TextPost";
+    }
+    return $t;
+}
+function PostExist($pid)
+{
+    try {
+        $table = PostType($pid);
+        $query = SQLWrapper()->prepare("SELECT gid FROM ".$table." WHERE PostID = :pid");
+        $query->execute([":pid" => $pid]);
+        $data=$query->fetch();
+        if($data==null){
+            return false;
+
+        }else{
+            return true;
+        }
+    } catch (PDOException $e) {
+        SendError("MySQL Error", $e->getMessage());
+        return false;
+    }
+}

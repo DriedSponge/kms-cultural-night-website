@@ -11,9 +11,9 @@
 
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item" id="homelink"><a class="nav-link" href="/home/">Home</a></li>
-                    <li class="nav-item" id="foodlink"><a class="nav-link" href="/videos/">Videos</a></li>
-                    <li class="nav-item" id="musiclink"><a class="nav-link" href="/photos/">Photos</a></li>
-                    <li class="nav-item" id="sportslink"><a class="nav-link" href="/other/">Other</a></li>
+                    <li class="nav-item" id="videoslink"><a class="nav-link" href="/videos/">Videos</a></li>
+                    <li class="nav-item" id="photoslink"><a class="nav-link" href="/photos/">Photos</a></li>
+                    <li class="nav-item" id="otherlink"><a class="nav-link" href="/other/">Other</a></li>
                 </ul>
 
                 <?php
@@ -43,7 +43,7 @@
                                 <a class="dropdown-item" href="/profile/<?=htmlspecialchars($_SESSION['UserName']);?>"><i class="fas fa-user"></i> My Profile</a>
                                 <a class="dropdown-item" href="/account-settings/"><i class="fas fa-cog"></i> Settings</a>
                                 <?php if(IsAdmin($_SESSION['gid'])){ ?>
-                                <a class="dropdown-item" href="/admin/"><i class="fas fa-shield-alt"></i> Admin Panel</a>
+                                <a class="dropdown-item" href="/admin/home/"><i class="fas fa-shield-alt"></i> Admin Panel</a>
                                 <?php } ?>
                             </div>
                         </li>

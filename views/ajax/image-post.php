@@ -88,7 +88,7 @@ if (isset($_POST['complete'])) {
     );
     if (isset($_SESSION['UserName'])) {
         if (!IsBanned($_SESSION['gid'])['banned']) {
-            if (isset($_POST['caption']) && isset($_POST['category']) && isset($_POST['title']) && isset($_POST['pid'])) {
+            if (isset($_POST['caption']) && isset($_POST['category']) && isset($_POST['title']) && isset($_POST['pid'])&& isset($_POST['cul'])) {
                 if (GetPostOwner($_POST['pid']) == $_SESSION['gid']) {
                     if (!IsValidPostCategory($_POST['category'])) {
                         $Msg['CErr'] = "Invalid category.";
@@ -100,14 +100,19 @@ if (isset($_POST['complete'])) {
                     }      
                     if(IsEmpty($_POST['title'])){
                         $Msg['TErr'] = "A title is required.";
-                    }else if (strlen($_POST['caption'] > 50)) {
+                    }else if (strlen($_POST['title'] > 50)) {
                         $Msg['TErr'] = "Please keep your title under 50 characters.";
-                    }             
-                    if (!isset($Msg['TErr']) && !isset($Msg['CErr']) && !isset($Msg['CapErr'])) {
+                    }
+                    if(IsEmpty($_POST['cul'])){
+                        $Msg['CulErr'] = "Please fillout this field!";
+                    }else if (strlen($_POST['cul'] > 50)) {
+                        $Msg['CulErr'] = "Please keep this under 50 characters.";
+                    }                  
+                    if (!isset($Msg['TErr']) && !isset($Msg['CErr']) && !isset($Msg['CapErr'])&& !isset($Msg['CulErr'])) {
                         try {
                             $approvalstatus = array("Status" => 0, "Message" => "Awaiting Approval");
-                            $query = SQLWrapper()->prepare("UPDATE ImagePost SET Title = :title, Category=:category,Caption=:caption,Approved=:a WHERE PostID = :pid");
-                            $query->execute([":title" => $_POST['title'], ":category" => $_POST['category'], ":caption" => $_POST['caption'], ":a" => json_encode($approvalstatus), ":pid" => $_POST['pid']]);
+                            $query = SQLWrapper()->prepare("UPDATE ImagePost SET Title = :title, Category=:category,Culture=:culture,Caption=:caption,Approved=:a WHERE PostID = :pid");
+                            $query->execute([":title" => $_POST['title'], ":category" => $_POST['category'],":culture"=>$_POST['cul'], ":caption" => $_POST['caption'], ":a" => json_encode($approvalstatus), ":pid" => $_POST['pid']]);
                             $Msg['success'] = true;
                         } catch (PDOException $e) {
                             $Msg['SysErr'] = true;
