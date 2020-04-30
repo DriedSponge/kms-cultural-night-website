@@ -169,8 +169,8 @@ function GetError($id)
 function IsAdmin($id)
 {
     $array = array(
-        "116367054307199743956",
-        "104684477093479828612"
+        "116367054307199743956", // DriedSponge
+        "104684477093479828612"    // Jordan
     );
     if (in_array($id, $array)) {
         $admin = array(
@@ -497,11 +497,11 @@ function DeleteImagePost($pid)
 function PostType($pid)
 {
     $type = substr($pid, 0, 2);
-    if($type="IP"){
+    if ($type = "IP") {
         $t = "ImagePost";
-    }else if($type="VP"){
+    } else if ($type = "VP") {
         $t = "VideoPost";
-    }else{
+    } else {
         $t = "TextPost";
     }
     return $t;
@@ -510,17 +510,39 @@ function PostExist($pid)
 {
     try {
         $table = PostType($pid);
-        $query = SQLWrapper()->prepare("SELECT gid FROM ".$table." WHERE PostID = :pid");
+        $query = SQLWrapper()->prepare("SELECT gid FROM " . $table . " WHERE PostID = :pid");
         $query->execute([":pid" => $pid]);
-        $data=$query->fetch();
-        if($data==null){
+        $data = $query->fetch();
+        if ($data == null) {
             return false;
-
-        }else{
+        } else {
             return true;
         }
     } catch (PDOException $e) {
         SendError("MySQL Error", $e->getMessage());
+        return false;
+    }
+}
+function DeletePost($pid)
+{
+    if (PostExist($pid)) {
+        if (PostType($pid) == "ImagePost") {
+            if (DeleteImagePost($pid)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            try{
+                $query = SQLWrapper()->prepare("DELETE FROM ".PostType($pid)." WHERE PostID = :pid");
+                $query->execute([":pid" => $pid]);
+                return  true;
+            } catch (PDOException $e){
+                SendError("MySQL Error", $e->getMessage());
+                return false;
+            }
+        }
+    } else {
         return false;
     }
 }

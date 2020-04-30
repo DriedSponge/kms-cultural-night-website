@@ -1,10 +1,10 @@
-function BlockPost(pid, url,table) {
+function DeletePost(pid, url,table) {
     if(table == null){
         var table = null
     }
-    $.post(`${url}ajax/block-post.php`, {
+    $.post(`${url}ajax/delete-post.php`, {
         pid: pid,
-        block: 1,
+        delete: 1,
         table:table
     })
     .done(function(data){

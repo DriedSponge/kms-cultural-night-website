@@ -120,7 +120,7 @@ $data = $user->fetch();
                                         <div class="card card-border">
                                             <div class="card-body">
                                                 <?php
-                                                    $query3 = SQLWrapper()->prepare("SELECT PostID,Approved FROM ImagePost WHERE gid= :gid AND Deleted = 0");
+                                                    $query3 = SQLWrapper()->prepare("SELECT PostID,Approved FROM ImagePost WHERE gid= :gid");
                                                     $query3->execute([":gid"=>$data['gid']]);
                                                     $phocount = $query3->rowCount();
                                                     $phodata = $query3->fetchAll();

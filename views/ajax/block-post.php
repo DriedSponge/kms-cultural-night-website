@@ -22,10 +22,16 @@ if (isset($_POST['block'])) {
                                 if(data.success){
                                     AlertSuccess(data.Msg)
                                     $("#deny-modal").modal("hide");
-                                    Load("#photo-post");                                    
+                                    <?php if(IsEmpty($_POST['table'])){ ?>
+                                         setInterval(function(){
+                                            location.reload()
+                                         },2500)
+                                        <?php }else{ ?>
+                                        Load("<?= v($_POST['table']); ?>");
+                                        <?php } ?>                                  
                                 }else{
                                     if(data.SysErr){
-
+                                        AlertError(data.Msg);
                                     }else{
                                         if(data.RsnErr){
                                             InValidate("#reason",data.RsnErr)
@@ -94,16 +100,16 @@ if (isset($_POST['confirm'])) {
                             } else if (strlen($_POST['rsn']) > 100) {
                                 $Msg['RsnErr'] = "Please reduce the reason to under 100 characters";
                             }
-                            if (!isset($Msg['rsnErr'])) {
+                            if (!isset($Msg['RsnErr'])) {
                                 try{
-                                    $approvalstatus = array("Status"=>3,"Message"=>$_POST['rsn']);
+                                    $approvalstatus = array("Status"=>2,"Message"=>$_POST['rsn']);
                                     $query = SQLWrapper()->prepare("UPDATE ".PostType($_POST['pid'])." SET Approved=:a WHERE PostID = :pid");
                                     $query->execute([":a"=>json_encode($approvalstatus),":pid"=>$_POST['pid']]);
                                     $Msg['success'] = true;
                                     $Msg['Msg'] = "The post has been blocked and will not appear on the site!";
                                 } catch (PDOException $e)  {
                                     $Msg['SysErr'] = true;
-                                    $Msg['Msg'] = "Something causes the ban to fail. Please try again later.";
+                                    $Msg['Msg'] = "Something causes the block to fail. Please try again later.";
                                     SendError("MySQL Error", $e->getMessage());
                                 }
                             }

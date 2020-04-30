@@ -39,6 +39,13 @@ body {
     margin-bottom: 0.5em;
     text-align: center;
 }
+.content-box .subheading,.content-box h3{
+    color: black;
+    font-weight: 600;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
 .modal-title{
     color: black;
     font-weight: 900;
@@ -53,11 +60,13 @@ body {
 }
 .content-box .paragraph, .content-paragraph,.content-box label,.content-box p,.form-group label{
     color: rgb(78, 78, 78);
-    font-size: 1.5em;
+    font-size: 1.45em;
     line-height: 33px;
 }
 .content-box .paragraph strong, .content-paragraph,.content-box label strong,.content-box p strong{
     font-weight: 600;
+    color: black;
+
 }
 .form-control.form-control-alternative{
     color: black;
@@ -126,8 +135,9 @@ color: white;
     font-family: 'Roboto';
 }
 .alert b{
-    font-size: 1.4em;
+    font-size: 1.3em;
     font-family: 'Roboto';
+    font-weight: 500;
 }
 .page-title{
     font-size: 6em;

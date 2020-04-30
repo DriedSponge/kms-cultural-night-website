@@ -244,6 +244,14 @@ $router->all('/admin-scripts/{script}', function ($script) {
         echo "Unauthorized";
     }
 });
+$router->all('/photos/', function () {
+    require_once "GoogleAPI/vendor/autoload.php";
+    require_once "g-register-config.php";
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";
+    $host = $_SERVER['SERVER_NAME'];
+    $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
+    include(__DIR__ . '/views/photos.php');
+});
 $router->all('/photos/{postid}', function ($postid) {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "g-register-config.php";
@@ -252,7 +260,7 @@ $router->all('/photos/{postid}', function ($postid) {
     $dir = stripslashes("$protocol://$host" . dirname($_SERVER['PHP_SELF']) . "/");
     include(__DIR__ . '/views/photo-post.php');
 });
-$router->all('/privacy-and-terms/', function () {
+$router->all('/privacy-policy/', function () {
     require_once "GoogleAPI/vendor/autoload.php";
     require_once "g-register-config.php";
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off" ? "https" : "http";

@@ -2,7 +2,7 @@
 if (isset($_POST['load'])) {
     if (isset($_SESSION['UserName'])) {
         if (IsAdmin($_SESSION['gid'])['admin']) {
-            $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost WHERE Deleted = 0");
+            $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost");
             $query->execute();
             $data = $query->fetchAll();
             foreach ($data as $post) {
@@ -20,10 +20,10 @@ if (isset($_POST['load'])) {
                             <a style="color:white" href="/photos/<?=v($post['PostID']); ?>" target="_blank" title="Preview" rel="tooltip" class="btn btn-info btn-icon btn-sm ">
                                 <i class="far fa-eye"></i>
                             </a>
-                            <button title="Approve" type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm " data-original-title="" title="">
+                            <button title="Approve" onclick="ApprovePost('<?=v($post['PostID']);?>','<?=v($dir);?>','#photo-post')" type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm " data-original-title="" title="">
                                 <i class="fas fa-check"></i>
                             </button>
-                            <button title="Block" onclick="BlockPost('<?=v($post['PostID']);?>','<?=v($dir);?>')" type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="" title="">
+                            <button title="Block" onclick="BlockPost('<?=v($post['PostID']);?>','<?=v($dir);?>','#photo-post')" type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm " data-original-title="" title="">
                                 <i class="fas fa-times"></i>
                             </button>
                         </td>
