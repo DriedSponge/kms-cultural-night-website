@@ -6,7 +6,7 @@ if (isset($_POST['delete'])) {
                 $post = SQLWrapper()->prepare("SELECT Title,gid FROM " . PostType($_POST['pid']) . " WHERE PostID = :pid");
                 $post->execute([":pid" => $_POST['pid']]);
                 $data = $post->fetch();
-                if ($data['gid'] == $_SESSION['gid'] or IsAdmin($_SESSION['gid'])) {
+                if ($data['gid'] == $_SESSION['gid'] or IsAdmin($_SESSION['gid'])['admin']) {
 
 ?>
                     <script>
@@ -81,7 +81,7 @@ if (isset($_POST['confirm'])) {
             $post = SQLWrapper()->prepare("SELECT Title,gid FROM " . PostType($_POST['pid']) . " WHERE PostID = :pid");
             $post->execute([":pid" => $_POST['pid']]);
             $data = $post->fetch();
-            if ($data['gid'] == $_SESSION['gid'] or IsAdmin($_SESSION['gid'])) {
+            if ($data['gid'] == $_SESSION['gid'] or IsAdmin($_SESSION['gid'])['admin']) {
                 if(DeletePost($_POST['pid'])){
                     $Msg['Msg'] = "The post has been deleted and will no longer appear on the site.";
                     $Msg['success'] = true;

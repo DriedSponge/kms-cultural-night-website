@@ -104,7 +104,7 @@ if (isset($_POST['confirm'])) {
         if (IsAdmin($_SESSION['gid'])['admin']) {
             if (UserExist($_POST['gid'])) {
                 if (!IsBanned($_POST['gid'])['banned']) {
-                    if (!IsAdmin($_POST['gid']) or IsSuperAdmin($_SESSION['gid'])){
+                    if (!IsAdmin($_POST['gid'])['admin'] or IsSuperAdmin($_SESSION['gid'])){
                         if (isset($_POST['rsn'])) {
                             if (IsEmpty($_POST['rsn'])) {
                                 $Msg['rsnErr'] = "Please enter a reason.";

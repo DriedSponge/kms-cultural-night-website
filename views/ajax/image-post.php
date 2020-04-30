@@ -95,18 +95,18 @@ if (isset($_POST['complete'])) {
                     }
                     if (IsEmpty($_POST['caption'])) {
                         $Msg['CapErr'] = "Please enter a caption";
-                    } else if (strlen($_POST['caption'] > 1000)) {
+                    } else if (strlen($_POST['caption']) > 1000) {
                         $Msg['CapErr'] = "Please keep your caption under 1000 characters.";
                     }      
                     if(IsEmpty($_POST['title'])){
                         $Msg['TErr'] = "A title is required.";
-                    }else if (strlen($_POST['title'] > 50)) {
-                        $Msg['TErr'] = "Please keep your title under 50 characters.";
+                    }else if (strlen($_POST['title']) > 30) {
+                        $Msg['TErr'] = "Please keep your title under 30 characters.";
                     }
                     if(IsEmpty($_POST['cul'])){
                         $Msg['CulErr'] = "Please fillout this field!";
-                    }else if (strlen($_POST['cul'] > 50)) {
-                        $Msg['CulErr'] = "Please keep this under 50 characters.";
+                    }else if (strlen($_POST['cul']) > 40) {
+                        $Msg['CulErr'] = "Please keep this under 40 characters.";
                     }                  
                     if (!isset($Msg['TErr']) && !isset($Msg['CErr']) && !isset($Msg['CapErr'])&& !isset($Msg['CulErr'])) {
                         try {

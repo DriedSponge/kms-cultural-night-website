@@ -187,6 +187,7 @@ color: white;
     text-align:center;
     max-width: 1000px;
 }
+
 .row.display-flex {
     display: flex;
     flex-wrap: wrap;
@@ -245,4 +246,20 @@ color: white;
 }
 .table{
     font-size: 1.2em;
+}
+.card-photo{
+    margin: 10px 10px;
+    padding: 0mm;
+    background-color: rgba(255, 255, 255, 0);
+    text-align:center;
+    max-width: 1000px;
+    border: none;
+}
+.card-photo img{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.carousel-control-next-icon{
+    color: black;
+    background-color: black;
 }

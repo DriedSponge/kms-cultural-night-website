@@ -83,6 +83,7 @@ if (isset($_POST['confirm'])) {
                     $query = SQLWrapper()->prepare("UPDATE " . PostType($_POST['pid']) . " SET Approved=:a WHERE PostID = :pid");
                     $query->execute([":a" => json_encode($approvalstatus), ":pid" => $_POST['pid']]);
                     $Msg['Msg'] = "The post has been approved and will now appear on the site!";
+                    $Msg['success'] = true;
                 } catch (PDOException $e) {
                     $Msg['Msg'] = "Something causes the apporval to fail. Please try again later.";
                     SendError("MySQL Error", $e->getMessage());

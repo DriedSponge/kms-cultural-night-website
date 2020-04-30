@@ -42,7 +42,7 @@
                                 <a class="dropdown-item" href="/new-post/"><i class="fas fa-edit"></i> New Post</a>
                                 <a class="dropdown-item" href="/profile/<?=htmlspecialchars($_SESSION['UserName']);?>"><i class="fas fa-user"></i> My Profile</a>
                                 <a class="dropdown-item" href="/account-settings/"><i class="fas fa-cog"></i> Settings</a>
-                                <?php if(IsAdmin($_SESSION['gid'])){ ?>
+                                <?php if(IsAdmin($_SESSION['gid'])['admin']){ ?>
                                 <a class="dropdown-item" href="/admin/home/"><i class="fas fa-shield-alt"></i> Admin Panel</a>
                                 <?php } ?>
                             </div>

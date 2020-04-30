@@ -196,8 +196,8 @@ function IsAdmin($id)
 function IsSuperAdmin($id)
 {
     $array = array(
-        "116367054307199743956",
-        "104684477093479828612"
+        "116367054307199743956",// DriedSponge
+        "104684477093479828612"// Jordan
     );
     if (in_array($id, $array)) {
         return true;

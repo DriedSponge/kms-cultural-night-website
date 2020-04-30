@@ -109,20 +109,23 @@ if (isset($_SESSION['postimgid'])) {
                                     <?php
                                     $query = SQLWrapper()->prepare("SELECT Images,PostID FROM ImagePost WHERE gid = :gid AND  Title  IS NULL AND  Category  IS NULL AND  Caption  IS NULL");
                                     $query->execute([":gid" => $_SESSION['gid']]);
-                                    $data = $query->fetch();
-                                    $images = json_decode( $data['Images'], true);
-                                    //die(json_decode($query->fetch()['Images'], true));
+                                    $data = $query->fetch();                                    
+                                    $numOfCols = 3;
+                                    $rowCount = 0;
+                                    $images = json_decode($data['Images'], true);
+                                    $i = 1;
                                     foreach ($images as $image) {
                                     ?>
                                         <div class="col indexcol">
-
-                                            <div class="card card-border">
-                                                <div class="card-body">
+                                            <div class="card card-photo">
                                                     <a target="_blank" href="<?= v($image); ?>"><img data-src="<?= v($image); ?>" alt="Photo Post" class="img-fluid lozad" style="max-height:300px;" /></a>
-                                                </div>
                                             </div>
                                         </div>
-                                    <?php } ?>
+                                    <?php
+                                        $rowCount++;
+                                        if ($rowCount % $numOfCols == 0) echo '</div><br><div class="row display-flex">';
+                                    }
+                                    ?>
                                 </div>
                             </div>
                             <br>
@@ -224,12 +227,12 @@ if (isset($_SESSION['postimgid'])) {
                                     </div>
                                     <div class="form-group">
                                         <label>Title</label>
-                                        <input feedback="#t-f" id="t" maxlength="50" placeholder="Enter a title for this post" class="form-control form-control-alternative">
+                                        <input feedback="#t-f" id="t" maxlength="30" placeholder="Enter a title for this post" class="form-control form-control-alternative">
                                         <div id="t-f"></div>
                                     </div>
                                     <div class="form-group">
                                         <label>Culture/Region</label>
-                                        <input feedback="#cul-f" id="cul" maxlength="50" placeholder="What Culture/Region/Area is this from?" class="form-control form-control-alternative">
+                                        <input feedback="#cul-f" id="cul" maxlength="40" placeholder="What Culture/Region/Area is this from?" class="form-control form-control-alternative">
                                         <div id="cul-f"></div>
                                     </div>
                                     <div class="form-group">
