@@ -120,13 +120,13 @@ $data = $user->fetch();
                                         <div class="card card-border">
                                             <div class="card-body">
                                                 <?php
-                                                    $query3 = SQLWrapper()->prepare("SELECT PostID,Approved FROM ImagePost WHERE gid= :gid");
+                                                    $query3 = SQLWrapper()->prepare("SELECT PostID,Approved FROM ImagePost WHERE gid= :gid AND Private=0");
                                                     $query3->execute([":gid"=>$data['gid']]);
                                                     $phocount = $query3->rowCount();
                                                     $phodata = $query3->fetchAll();
                                                     foreach($phodata as $post){
                                                         $app = json_decode($post['Approved'],true);
-                                                        if($app['Status']==0){
+                                                        if($app['Status']==0 or $app['Status']==2){
                                                             $phocount = $phocount-1;
                                                         }
                                                     }

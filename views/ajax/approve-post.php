@@ -85,7 +85,7 @@ if (isset($_POST['confirm'])) {
                     $Msg['Msg'] = "The post has been approved and will now appear on the site!";
                     $Msg['success'] = true;
                 } catch (PDOException $e) {
-                    $Msg['Msg'] = "Something causes the apporval to fail. Please try again later.";
+                    $Msg['Msg'] = "Something caused the apporval to fail. Please try again later.";
                     SendError("MySQL Error", $e->getMessage());
                 }
             } else {

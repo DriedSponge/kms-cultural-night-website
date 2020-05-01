@@ -10,7 +10,7 @@ if (isset($_POST['load'])) {
     $records_per_page = 75;
     $starting_limit_number = ($page - 1) * $records_per_page;
     $limit = $starting_limit_number . "," . $records_per_page;
-    $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost WHERE Private=0 AND Title IS NOT NULL AND Category IS NOT NULL ORDER BY $col $ord LIMIT :start,:end");
+    $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Private,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost WHERE  Title IS NOT NULL AND Category IS NOT NULL ORDER BY $col $ord LIMIT :start,:end");
     $query->bindParam(':start', $starting_limit_number, PDO::PARAM_INT);
     $query->bindParam(':end', $records_per_page, PDO::PARAM_INT);
     $query->execute();
@@ -18,7 +18,7 @@ if (isset($_POST['load'])) {
     foreach ($data as $post) {
         $author = UserInfo($post['gid']);
         $approval = json_decode($post['Approved'],true);
-        if($approval['Status'] == 1 or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
+        if($approval['Status'] == 1 && $post['Private'] == 0 or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
             if($approval['Status'] == 2){
                 $class = "table-danger";
                 $title = "Blocked Post";
@@ -29,10 +29,13 @@ if (isset($_POST['load'])) {
                 $class = null;
                 $title = null;
             }
+            if($post['Private']){
+                $title .= " (Private)";
+            }
         ?>
             <tr class="search <?php echo $class; ?>" title=" <?php echo $title; ?>">
                 <td><a href="/profile-id/<?= v($post['gid']); ?>" target="_blank"><?= v($author['UserName']); ?></a></td>
-                <td><?= v($post['Title']); ?></td>
+                <td><?php if($post['Private']){echo '<i class="fas fa-lock"></i>';} ?><?= v($post['Title']); ?> </td>
                 <td><?= v($post['Category']); ?></td>
                 <td><?= v($post['Culture']); ?></td>
                 <td><?= v(FormatDate($post['Date'])); ?></td>

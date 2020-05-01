@@ -10,7 +10,7 @@ if (isset($_POST['delete'])) {
 
 ?>
                     <script>
-                        $("#approve-modal").modal("show");
+                        $("#delete-modal").modal("show");
                         $("#delete-button").click(function() {
                             $.post("<?= v($dir) ?>ajax/delete-post.php", {
                                     confirm: 1,
@@ -19,7 +19,7 @@ if (isset($_POST['delete'])) {
                                 .done(function(data) {
                                     if (data.success) {
                                         AlertSuccess(data.Msg)
-                                        $("#approve-modal").modal("hide");
+                                        $("#delete-modal").modal("hide");
                                         <?php if (IsEmpty($_POST['table'])) { ?>
                                             setInterval(function() {
                                                 location.reload()
@@ -34,7 +34,7 @@ if (isset($_POST['delete'])) {
                                 })
                         })
                     </script>
-                    <div class="modal" tabindex="-1" id="approve-modal" role="dialog">
+                    <div class="modal" tabindex="-1" id="delete-modal" role="dialog">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -86,7 +86,7 @@ if (isset($_POST['confirm'])) {
                     $Msg['Msg'] = "The post has been deleted and will no longer appear on the site.";
                     $Msg['success'] = true;
                 }else{
-                    $Msg['Msg'] = "Unauthorized";
+                    $Msg['Msg'] = "Something caused the operation to fail. Please try again later.";
                 }
             } else {
                 $Msg['Msg'] = "Unauthorized";

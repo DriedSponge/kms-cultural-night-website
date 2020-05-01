@@ -1,5 +1,5 @@
 <?php
-$post = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Images,Caption,Approved,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost WHERE PostID = :pid AND Private = 0");
+$post = SQLWrapper()->prepare("SELECT Title,Private,Category,Culture,gid,Images,Caption,Approved,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost WHERE PostID = :pid");
 $post->execute([":pid" => $postid]);
 $data = $post->fetch();
 $showpost = false;
@@ -8,7 +8,7 @@ if ($data == null) {
 } else {
     $author = UserInfo($data['gid']);
     $approval = json_decode($data['Approved'], true);
-    if ($approval['Status'] == 0 or $approval['Status'] == 2) {
+    if ($approval['Status'] == 0 or $approval['Status'] == 2 or $data['Private'] == 1) {
         if (isset($_SESSION['UserName'])) {
             if (IsAdmin($_SESSION['gid'])['admin'] or $_SESSION['gid'] == $data['gid']) {
                 $showpost = true;
@@ -75,6 +75,11 @@ if ($data == null) {
                                         <div class="alert alert-success" role="alert">
                                             Your post has been approved and is now visible to all users!
                                         </div>
+                                    <?php }
+                                    if ($data['Private'] == 1) { ?>
+                                        <div class="alert alert-warning" role="alert">
+                                            This post is private, and is only visible to you.
+                                        </div>
                                 <?php }
                                 }  ?>
                             </div>
@@ -89,7 +94,7 @@ if ($data == null) {
                                             $i = 1;
                                             foreach ($images as $image) {
                                             ?>
-                                                <div class="carousel-item <?php if ($i == 1) {echo "active";} ?>">
+                                                <div class="carousel-item <?php if ($i == 1) {echo "active"; } ?>">
                                                     <div class="text-center">
                                                         <a target="_blank" href="<?= v($image); ?>"><img data-src="<?= v($image); ?>" alt="Photo Post" class="img-fluid lozad" style="max-height:450px;" /></a>
                                                     </div>
@@ -115,9 +120,14 @@ if ($data == null) {
                                 <?php if (isset($_SESSION['gid']) && $_SESSION['gid'] == $data['gid']) { ?>
                                     <h2>Owner Actions</h2>
                                     <div class="row" style="justify-content: center">
-                                        <button onclick="EditRestrictions('<?= v($data['gid']); ?>','<?= v($dir); ?>')" class="btn btn-warning">Private Post</button>
+                                        <?php if($data['Private']==0){ ?>
+                                        <script src="<?= v($dir); ?>js/privatepost.js"></script>
+                                        <button onclick="PrivatePost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-warning">Private Post</button>
+                                        <?php }else{ ?>
+                                        <script src="<?= v($dir); ?>js/publicpost.js"></script>
+                                        <button onclick="PublicPost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-success">Make Post Public</button>
+                                        <?php } ?>
                                         <script src="<?= v($dir); ?>js/deletepost.js"></script>
-
                                         <button onclick="DeletePost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-danger">Permanently Delete Post</button>
                                     </div>
                                 <?php } ?>
@@ -131,6 +141,13 @@ if ($data == null) {
                                         if ($approval['Status'] != 1) { ?>
                                             <script src="<?= v($dir); ?>admin-scripts/approvepost.js"></script>
                                             <button onclick="ApprovePost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-success">Approve Post</button>
+                                        <?php } ?>
+                                        <?php if($data['Private']==0){ ?>
+                                        <script src="<?= v($dir); ?>js/privatepost.js"></script>
+                                        <button onclick="PrivatePost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-warning">Private Post</button>
+                                        <?php }else{ ?>
+                                        <script src="<?= v($dir); ?>js/publicpost.js"></script>
+                                        <button onclick="PublicPost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-success">Make Post Public</button>
                                         <?php } ?>
                                         <script src="<?= v($dir); ?>js/deletepost.js"></script>
                                         <button onclick="DeletePost('<?= v($postid); ?>','<?= v($dir); ?>')" class="btn btn-danger">Permanently Delete Post</button>

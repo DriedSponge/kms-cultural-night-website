@@ -33,27 +33,29 @@
                             });
                         </script>
                     </div>
-                    <table  id="photopost" url="<?=v($dir);?>ajax/load-photo-post.php" pid="ph" class="table table-hover table-responsive text-center">
-                        <thead>
-                            <tr>
-                                <th>Author</th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Culture/Region</th>
-                                <th>Date Posted</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <script>
-                            $(document).ready(function() {
-                                AjaxPagination("ph", 1, true, "Date", "DESC");
-                            })
-                        </script>
-                        <div id="ph-loading"></div>
-                        <tbody >
-                            
-                        </tbody>
-                    </table>
+                    <div  class="table-responsive">
+                        <table  id="photopost" url="<?= v($dir); ?>ajax/load-photo-post.php" pid="ph" class="table table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th>Author</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Culture/Region</th>
+                                    <th>Date Posted</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <script>
+                                $(document).ready(function() {
+                                    AjaxPagination("ph", 1, true, "Date", "DESC");
+                                })
+                            </script>
+                            <div id="ph-loading"></div>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
                     <nav>
                         <ul id="du-blist" class="pagination justify-content-center">
                             <?php
