@@ -13,32 +13,60 @@
             <div class="container-fluid">
                 <?php include("views/includes/managenav.php"); ?>
                 <div class="content-box">
-                    <script src="<?=v($dir);?>admin-scripts/denypost.js"></script>
-                    <script src="<?=v($dir);?>admin-scripts/approvepost.js"></script>
+                    <script src="<?= v($dir); ?>admin-scripts/denypost.js"></script>
+                    <script src="<?= v($dir); ?>admin-scripts/approvepost.js"></script>
                     <h1>Approval Queue</h1>
                     <p class="text-center">Please be sure to review each post before approving it.</p>
                     <div id="#photo-post-queue">
                         <h2>Photo Post Queue</h2>
-                        <table class="table table-hover text-center">
-                            <thead>
-                                <tr>
-                                    <th>Author</th>
-                                    <th>Title</th>
-                                    <th>Category</th>
-                                    <th>Culture/Region</th>
-                                    <th>Date Posted</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <script>
-                                $(document).ready(function(){
-                                    Load("#photo-post");                                    
-                                })
-                            </script>
-                            <tbody id="photo-post" url="<?=v($dir);?>ajax/manage-photo-post.php">
-                                
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Author</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Culture/Region</th>
+                                        <th>Date Posted</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <script>
+                                    $(document).ready(function() {
+                                        Load("#photo-post");
+                                    })
+                                </script>
+                                <tbody id="photo-post" url="<?= v($dir); ?>ajax/manage-photo-post.php">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="#video-post-queue">
+                        <h2>Video Post Queue</h2>
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Author</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Culture/Region</th>
+                                        <th>Date Posted</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <script>
+                                    $(document).ready(function() {
+                                        Load("#video-post");
+                                    })
+                                </script>
+                                <tbody id="video-post" url="<?= v($dir); ?>ajax/manage-video-post.php">
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="container">
                     </div>
@@ -61,7 +89,6 @@
         navitem = document.getElementById('postlink').classList.add('active')
         const observer = lozad(); // lazy loads elements with default selector as '.lozad'
         observer.observe();
-
     </script>
 
 

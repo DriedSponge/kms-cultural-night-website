@@ -497,12 +497,12 @@ function DeleteImagePost($pid)
 function PostType($pid)
 {
     $type = substr($pid, 0, 2);
-    if ($type = "IP") {
+    if ($type == "IP") {
         $t = "ImagePost";
-    } else if ($type = "VP") {
+    } else if ($type == "VP") {
         $t = "VideoPost";
     } else {
-        $t = "TextPost";
+        $t == "TextPost";
     }
     return $t;
 }

@@ -31,106 +31,102 @@ $restrictions = FetchRestrictions($_SESSION['gid']);
                 ?>
                     <div class="content-box">
                         <h1>New Video Post</h1>
-                            <p class="text-center">Please fill in the rest of the details to complete your post!</p>
-                            <br>
-                            <div class="container">
-                                <div id="success-mesage" class="d-none">
-                                    <div class="alert alert-success text-center" role="alert">
-                                        <span><b>Success!</b><br><span id="success_message_text">Your images have been added to the approval queue! If your post is approved it will appear on the site. Thank you for particiapting!</span></span>
-                                    </div>
+                        <p class="text-center">Please fill out your post details here. <strong>Because of server upload limits, you will need to upload your video file through this <a href="https://forms.gle/fzFa8pSbFLJgsFvEA" target="_blank">Google Form</a>.</strong> Thank you for understanding.</p>
+                        <br>
+                        <div class="container">
+                            <div id="success-mesage" class="d-none">
+                                <div class="alert alert-success text-center" role="alert">
+                                    <span><b>Success!</b><br><span id="success_message_text">Your video has been added to the approval queue! Don't forget to upload your video to <a href="https://forms.gle/fzFa8pSbFLJgsFvEA" target="_blank">this form</a>! Thank you!</span></span>
                                 </div>
-                                <div id="loading"></div>
-                                <script>
-                                    $(document).ready(function() {
-                                        $("#post-video").submit(function(e) {
-                                            e.preventDefault()
-                                             $("#post-video").hide()
-                                             Loading(true,"#loading");
-                                            var caption = $("#cap").val()
-                                            var category = $("#c").val()
-                                            var title = $("#t").val()
-                                            var cul = $("#cul").val()
-                                            $.post('<?= v($dir); ?>ajax/image-post.php', {
-                                                complete: 1,
+                            </div>
+                            <div id="loading"></div>
+                            <script>
+                                $(document).ready(function() {
+                                    $("#post-video").submit(function(e) {
+                                        e.preventDefault()
+                                        $("#post-video").hide()
+                                        Loading(true, "#loading");
+                                        var caption = $("#cap").val()
+                                        var category = $("#c").val()
+                                        var title = $("#t").val()
+                                        var cul = $("#cul").val()
+                                        $.post('<?= v($dir); ?>ajax/video-post.php', {
+                                                video: 1,
                                                 caption: caption,
                                                 category: category,
                                                 title: title,
-                                                cul: cul,
-                                                pid: '<?=v($data['PostID']);?>'
+                                                cul: cul
                                             })
-                                            .done(function(data){
-                                                Loading(false,"#loading");
-                                                if(data.success){
+                                            .done(function(data) {
+                                                Loading(false, "#loading");
+                                                if (data.success) {
                                                     $("#success-mesage").removeClass("d-none")
                                                     setInterval(() => {
-                                                        location.href='<?=v($dir);?>photos/<?=v($data['PostID']);?>';
+                                                        location.href = `<?= v($dir); ?>videos/${data.pid}`;
                                                     }, 3500);
-                                                }else{
+                                                } else {
                                                     $("#post-video").show()
-                                                    if(data.SysErr){
+                                                    if (data.SysErr) {
                                                         AlertError(data.Msg)
-                                                    }else{
-                                                        if(data.TErr){
-                                                            InValidate("#t",data.TErr)
-                                                        }else{
-                                                            Validate("#t",data.TErr)
+                                                    } else {
+                                                        if (data.TErr) {
+                                                            InValidate("#t", data.TErr)
+                                                        } else {
+                                                            Validate("#t", data.TErr)
                                                         }
-                                                        if(data.CapErr){
-                                                            InValidate("#cap",data.CapErr)
-                                                        }else{
-                                                            Validate("#cap",data.CapErr)
+                                                        if (data.CapErr) {
+                                                            InValidate("#cap", data.CapErr)
+                                                        } else {
+                                                            Validate("#cap", data.CapErr)
                                                         }
-                                                        if(data.CErr){
-                                                            InValidate("#c",data.CErr)
-                                                        }else{
-                                                            Validate("#c",data.CErr)
+                                                        if (data.CErr) {
+                                                            InValidate("#c", data.CErr)
+                                                        } else {
+                                                            Validate("#c", data.CErr)
                                                         }
-                                                        if(data.CulErr){
-                                                            InValidate("#cul",data.CulErr)
-                                                        }else{
-                                                            Validate("#cul",data.CulErr)
+                                                        if (data.CulErr) {
+                                                            InValidate("#cul", data.CulErr)
+                                                        } else {
+                                                            Validate("#cul", data.CulErr)
                                                         }
                                                     }
                                                 }
                                             })
-                                        })
-                                        
                                     })
-                                </script>
-                                <form id="post-video">
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <select class="form-control form-control-alternative" feedback="#c-f" id="c" name="c">
-                                            <option value="Food">Food</option>
-                                            <option value="Music">Music</option>
-                                            <option value="Sports">Sports</option>
-                                            <option value="Gatherings">Gatherings</option>
-                                            <option value="Other" selected>Other</option>
-                                        </select>
-                                        <div id="c-f"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Title</label>
-                                        <input feedback="#t-f" id="t" maxlength="50" placeholder="Enter a title for this post" class="form-control form-control-alternative">
-                                        <div id="t-f"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Culture/Region</label>
-                                        <input feedback="#cul-f" id="cul" maxlength="50" placeholder="What Culture/Region/Area is this from?" class="form-control form-control-alternative">
-                                        <div id="cul-f"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Caption</label>
-                                        <textarea rows="5" feedback="#cap-f" id="cap" maxlength="1000" placeholder="Enter a breif caption for this post." class="form-control form-control-alternative"></textarea>
-                                        <div id="cap-f"></div>
-                                    </div>
-                                    <br>
-                                        <div class="col">
-                                            <button type="submit" style="width:100%" class="btn btn-success">Submit for approval</button>
-                                        </div>
 
-                                </form>
-                            </div>
+                                })
+                            </script>
+                            <form id="post-video">
+                            <div class="form-group">
+                                    <label>Title</label>
+                                    <input feedback="#t-f" id="t" maxlength="50" placeholder="Enter a title for this post" class="form-control form-control-alternative">
+                                    <div id="t-f"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select class="form-control form-control-alternative" feedback="#c-f" id="c" name="c">
+                                        <option value="Food">Food</option>
+                                        <option value="Music">Music</option>
+                                        <option value="Sports">Sports</option>
+                                        <option value="Gatherings">Gatherings</option>
+                                        <option value="Other" selected>Other</option>
+                                    </select>
+                                    <div id="c-f"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Culture/Region</label>
+                                    <input feedback="#cul-f" id="cul" maxlength="50" placeholder="What Culture/Region/Area is this from?" class="form-control form-control-alternative">
+                                    <div id="cul-f"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Caption</label>
+                                    <textarea rows="5" feedback="#cap-f" id="cap" maxlength="1000" placeholder="Enter a breif caption for this post." class="form-control form-control-alternative"></textarea>
+                                    <div id="cap-f"></div>
+                                </div>
+                                <br>
+                                <button type="submit" style="width:100%" class="btn btn-success">Submit for approval</button>
+                            </form>
+                        </div>
                     </div>
                 <?php
                 }
