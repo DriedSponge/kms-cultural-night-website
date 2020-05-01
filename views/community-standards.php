@@ -37,7 +37,7 @@
                         </li>
                         <li>Explicit language is strictly prohibited.</li>
                         <li>No advertising of any kind</li>
-
+                        <li>Please keep all post on topic (International Culture)</li>
                     </ul>
                     <h3 class="text-left">Moderation & Bans</h3>
                     <ul class="paragraph">

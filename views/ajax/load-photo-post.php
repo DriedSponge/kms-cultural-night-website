@@ -18,7 +18,7 @@ if (isset($_POST['load'])) {
     foreach ($data as $post) {
         $author = UserInfo($post['gid']);
         $approval = json_decode($post['Approved'],true);
-        if($approval['Status'] == 1 && $post['Private'] == 0 or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
+        if($approval['Status'] == 1 && $post['Private'] == 0 && !IsBanned($post['gid'])['banned'] or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
             if($approval['Status'] == 2){
                 $class = "table-danger";
                 $title = "Blocked Post";
@@ -34,7 +34,7 @@ if (isset($_POST['load'])) {
             }
         ?>
             <tr class="search <?php echo $class; ?>" title=" <?php echo $title; ?>">
-                <td><a href="/profile-id/<?= v($post['gid']); ?>" target="_blank"><?= v($author['UserName']); ?></a></td>
+                <td><a href="/profile-id/<?= v($post['gid']); ?>"><?= v($author['UserName']); ?></a></td>
                 <td><?php if($post['Private']){echo '<i class="fas fa-lock"></i>';} ?><?= v($post['Title']); ?> </td>
                 <td><?= v($post['Category']); ?></td>
                 <td><?= v($post['Culture']); ?></td>

@@ -19,6 +19,7 @@ $restrictions = FetchRestrictions($_SESSION['gid']);
             <div class="container-fluid">
                 <div class="content-box">
                     <h1>Select Post Type</h1>
+                    <p class="text-center">Remeber to review our <a href="https://localhost/community-standards/">Community Standards</a> before posting!</p>
                     <div class="row display-flex">
                         <div class="col indexcol">
                             <div class="card card-border">

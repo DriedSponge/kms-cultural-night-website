@@ -68,6 +68,32 @@
                             </table>
                         </div>
                     </div>
+                    <div id="#video-post-queue">
+                        <h2>Text Post Queue</h2>
+                        <div class="table-responsive">
+                            <table class="table table-hover text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Author</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Culture/Region</th>
+                                        <th>Date Posted</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <script>
+                                    $(document).ready(function() {
+                                        Load("#text-post");
+                                    })
+                                </script>
+                                <tbody id="text-post" url="<?= v($dir); ?>ajax/manage-text-post.php">
+
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
                     <div class="container">
                     </div>
                     <div class="container">

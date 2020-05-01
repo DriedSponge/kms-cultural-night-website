@@ -73,24 +73,201 @@ $data = $user->fetch();
                                 <div class="row" style="justify-content: center">
                                     <?php if (!$ban['banned']) { ?>
                                         <script src="<?= htmlspecialchars($dir); ?>admin-scripts/ban.js"></script>
-                                        <button onclick="Ban('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-danger">Ban</button>
+                                        <button onclick="Ban('<?= htmlspecialchars($data['gid']); ?>','<?= htmlspecialchars($dir); ?>')" class="btn btn-danger">Ban</button>
                                     <?php } else { ?>
                                         <script src="<?= htmlspecialchars($dir); ?>admin-scripts/unban.js"></script>
-                                        <button onclick="UnBan('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-danger">Unban</button>
+                                        <button onclick="UnBan('<?= htmlspecialchars($data['gid']); ?>','<?= htmlspecialchars($dir); ?>')" class="btn btn-danger">Unban</button>
                                     <?php } ?>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/restrictions.js"></script>
-                                    <button onclick="EditRestrictions('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-warning">Edit Restrictions</button>
+                                    <button onclick="EditRestrictions('<?= htmlspecialchars($data['gid']); ?>','<?= htmlspecialchars($dir); ?>')" class="btn btn-warning">Edit Restrictions</button>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/edit-profile.js"></script>
-                                    <button onclick="EditProfile('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-success">Edit Profile</button>
+                                    <button onclick="EditProfile('<?= htmlspecialchars($data['gid']); ?>','<?= htmlspecialchars($dir); ?>')" class="btn btn-success">Edit Profile</button>
                                     <script src="<?= htmlspecialchars($dir); ?>admin-scripts/extra-info.js"></script>
-                                    <button onclick="ExtraInfo('<?= htmlspecialchars($data['gid']);?>','<?= htmlspecialchars($dir);?>')" class="btn btn-info">View Extra Information</button>
+                                    <button onclick="ExtraInfo('<?= htmlspecialchars($data['gid']); ?>','<?= htmlspecialchars($dir); ?>')" class="btn btn-info">View Extra Information</button>
                                 </div>
                             <?php } ?>
                         </div>
                         <br>
+                        <?php
+                        $query3 = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Private,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM ImagePost WHERE gid= :gid");
+                        $query3->execute([":gid" => $data['gid']]);
+                        $phocount = $query3->rowCount();
+                        $phodata = $query3->fetchAll();
+                        $query2 = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Private,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM VideoPost WHERE gid= :gid");
+                        $query2->execute([":gid" => $data['gid']]);
+                        $vidcount = $query2->rowCount();
+                        $viddata = $query2->fetchAll();
+                        $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Private,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM TextPost WHERE gid= :gid");
+                        $query->execute([":gid" => $data['gid']]);
+                        $txtcount = $query->rowCount();
+                        $txtdata = $query->fetchAll();
+                        ?>
                         <div class="content-box">
                             <h1>Post</h1>
-                            <p class="text-center">Nothing yet...</p>
+                            <h2>Photo Post</h2>
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Culture/Region</th>
+                                            <th>Date Posted</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($phodata as $post) {
+                                            $app = json_decode($post['Approved'], true);
+                                            if ($app['Status'] == 0 or $app['Status'] == 2) {
+                                                $phocount = $phocount - 1;
+                                            }
+                                            if($app['Status'] == 1 && $post['Private'] == 0 && !IsBanned($post['gid'])['banned'] or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
+                                            if($app['Status'] == 2){
+                                                $class = "table-danger";
+                                                $title = "Blocked Post";
+                                            }else if($app['Status'] == 0){
+                                                $class = "table-warning";
+                                                $title = "Awaiting approval";
+                                            }else{
+                                                $class = null;
+                                                $title = null;
+                                            }
+                                            if($post['Private']){
+                                                $title .= " (Private)";
+                                            }
+                                        ?>
+                                            <tr class="search <?php echo $class; ?>" title=" <?php echo $title; ?>">
+                                                <td><?php if ($post['Private']) {
+                                                        echo '<i class="fas fa-lock"></i>';
+                                                    } ?><?= v($post['Title']); ?> </td>
+                                                <td><?= v($post['Category']); ?></td>
+                                                <td><?= v($post['Culture']); ?></td>
+                                                <td><?= v(FormatDate($post['Date'])); ?></td>
+                                                <td class="td-actions">
+                                                    <a style="color:white" href="/photos/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
+                                                        Open
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        }
+                                    }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <h2>Video Post</h2>
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Culture/Region</th>
+                                            <th>Date Posted</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($viddata as $post) {
+                                            $app = json_decode($post['Approved'], true);
+                                            if($app['Status'] == 1 && $post['Private'] == 0 && !IsBanned($post['gid'])['banned'] or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
+                                            if ($app['Status'] == 0 or $app['Status'] == 2) {
+                                                $vidcount = $vidcount - 1;
+                                            }
+                                            if($app['Status'] == 2){
+                                                $class = "table-danger";
+                                                $title = "Blocked Post";
+                                            }else if($app['Status'] == 0){
+                                                $class = "table-warning";
+                                                $title = "Awaiting approval";
+                                            }else{
+                                                $class = null;
+                                                $title = null;
+                                            }
+                                            if($post['Private']){
+                                                $title .= " (Private)";
+                                            }
+                                        ?>
+                                            <tr class="search <?php echo $class; ?>" title=" <?php echo $title; ?>">
+                                                <td><?php if ($post['Private']) {
+                                                        echo '<i class="fas fa-lock"></i>';
+                                                    } ?><?= v($post['Title']); ?> </td>
+                                                <td><?= v($post['Category']); ?></td>
+                                                <td><?= v($post['Culture']); ?></td>
+                                                <td><?= v(FormatDate($post['Date'])); ?></td>
+                                                <td class="td-actions">
+                                                    <a style="color:white" href="/videos/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
+                                                        Open
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        }
+                                    }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <h2>Text Post</h2>
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Culture/Region</th>
+                                            <th>Date Posted</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($txtdata as $post) {
+                                            $app = json_decode($post['Approved'], true);
+                                            if($app['Status'] == 1 && $post['Private'] == 0 && !IsBanned($post['gid'])['banned'] or isset($_SESSION['gid']) && $_SESSION['gid'] == $post['gid'] or isset($_SESSION['gid']) && IsAdmin($_SESSION['gid'])['admin']){
+                                            if ($app['Status'] == 0 or $app['Status'] == 2) {
+                                                $txtcount = $txtcount - 1;
+                                            }
+                                            if($app['Status'] == 2){
+                                                $class = "table-danger";
+                                                $title = "Blocked Post";
+                                            }else if($app['Status'] == 0){
+                                                $class = "table-warning";
+                                                $title = "Awaiting approval";
+                                            }else{
+                                                $class = null;
+                                                $title = null;
+                                            }
+                                            if($post['Private']){
+                                                $title .= " (Private)";
+                                            }
+                                        ?>
+                                            <tr class="search <?php echo $class; ?>" title=" <?php echo $title; ?>">
+                                                <td><?php if ($post['Private']) {
+                                                        echo '<i class="fas fa-lock"></i>';
+                                                    } ?><?= v($post['Title']); ?> </td>
+                                                <td><?= v($post['Category']); ?></td>
+                                                <td><?= v($post['Culture']); ?></td>
+                                                <td><?= v(FormatDate($post['Date'])); ?></td>
+                                                <td class="td-actions">
+                                                    <a style="color:white" href="/videos/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
+                                                        Open
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php
+                                        }
+                                    }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <br>
                         <div class="content-box">
@@ -100,9 +277,9 @@ $data = $user->fetch();
                                     <div class="col indexcol">
                                         <div class="card card-border">
                                             <div class="card-body">
-                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/document.png" alt="Text Post" class="img-fluid lozad" style="max-height:100px;" />
+                                                <img data-src="<?= htmlspecialchars($dir); ?>img/resources/icons/png/document.png" alt="Text Post" class="img-fluid lozad" style="max-height:100px;" />
                                                 <h1>Text Post</h1>
-                                                <h2 style="font-size: 3em">0</h2>
+                                                <h2 style="font-size: 3em"><?= v($txtcount); ?></h2>
 
                                             </div>
                                         </div>
@@ -110,30 +287,18 @@ $data = $user->fetch();
                                     <div class="col indexcol">
                                         <div class="card card-border">
                                             <div class="card-body">
-                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/video-camera.png" alt="Video Post" class="img-fluid lozad" style="max-height:100px;" />
+                                                <img data-src="<?= htmlspecialchars($dir); ?>img/resources/icons/png/video-camera.png" alt="Video Post" class="img-fluid lozad" style="max-height:100px;" />
                                                 <h1>Video Post</h1>
-                                                <h2 style="font-size: 3em">0</h2>
+                                                <h2 style="font-size: 3em"><?= v($vidcount); ?></h2>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col indexcol">
                                         <div class="card card-border">
                                             <div class="card-body">
-                                                <?php
-                                                    $query3 = SQLWrapper()->prepare("SELECT PostID,Approved FROM ImagePost WHERE gid= :gid AND Private=0");
-                                                    $query3->execute([":gid"=>$data['gid']]);
-                                                    $phocount = $query3->rowCount();
-                                                    $phodata = $query3->fetchAll();
-                                                    foreach($phodata as $post){
-                                                        $app = json_decode($post['Approved'],true);
-                                                        if($app['Status']==0 or $app['Status']==2){
-                                                            $phocount = $phocount-1;
-                                                        }
-                                                    }
-                                                ?>
-                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/gallery.png" alt="Photo Post" class="img-fluid lozad" style="max-height:100px;" />
+                                                <img data-src="<?= htmlspecialchars($dir); ?>img/resources/icons/png/gallery.png" alt="Photo Post" class="img-fluid lozad" style="max-height:100px;" />
                                                 <h1>Photo Post</h1>
-                                                <h2 style="font-size: 3em"><?=v($phocount);?></h2>
+                                                <h2 style="font-size: 3em"><?= v($phocount); ?></h2>
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +307,7 @@ $data = $user->fetch();
                                     <div class="col indexcol">
                                         <div class="card card-border">
                                             <div class="card-body">
-                                                <img data-src="<?=htmlspecialchars($dir);?>img/resources/icons/png/calendar.png" alt="Calendar" class="img-fluid lozad" style="max-height:100px;" />
+                                                <img data-src="<?= htmlspecialchars($dir); ?>img/resources/icons/png/calendar.png" alt="Calendar" class="img-fluid lozad" style="max-height:100px;" />
                                                 <h1>Account Created:</h1>
                                                 <h2 style="font-size: 3em"><?= htmlspecialchars(FormatDate($data['CreationDate'])); ?></h2>
                                             </div>

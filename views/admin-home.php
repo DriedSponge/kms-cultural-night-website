@@ -13,12 +13,12 @@
                 <?php include("views/includes/managenav.php"); ?>
                 <div class="content-box">
                     <h1>Welcome to the Admin Panel.</h1>
-                    <p class="text-center">Here you can post on the site and the sites users themselves to ensure everything runs smoothly and the site contains appropiate content.</p>
+                    <p class="text-center">Here you can moderate post and users.</p>
                 </div>
                 <br>
                 <div class="content-box">
                     <h1>Recent Events</h1>
-                    <p class="text-center"></p>
+                    <h2>Coming soon...</h2>
                 </div>
             </div>
         </div>

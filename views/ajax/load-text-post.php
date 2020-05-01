@@ -10,7 +10,7 @@ if (isset($_POST['load'])) {
     $records_per_page = 75;
     $starting_limit_number = ($page - 1) * $records_per_page;
     $limit = $starting_limit_number . "," . $records_per_page;
-    $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Private,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM VideoPost WHERE  Title IS NOT NULL AND Category IS NOT NULL ORDER BY $col $ord LIMIT :start,:end");
+    $query = SQLWrapper()->prepare("SELECT Title,Category,Culture,gid,Private,Approved,PostID,UNIX_TIMESTAMP(Date) AS Date FROM TextPost WHERE  Title IS NOT NULL AND Category IS NOT NULL ORDER BY $col $ord LIMIT :start,:end");
     $query->bindParam(':start', $starting_limit_number, PDO::PARAM_INT);
     $query->bindParam(':end', $records_per_page, PDO::PARAM_INT);
     $query->execute();
@@ -34,13 +34,13 @@ if (isset($_POST['load'])) {
             }
         ?>
             <tr class="search <?php echo $class; ?>" title=" <?php echo $title; ?>">
-                <td><a href="/profile-id/<?= v($post['gid']); ?>" ><?= v($author['UserName']); ?></a></td>
+                <td><a href="/profile-id/<?= v($post['gid']); ?>""><?= v($author['UserName']); ?></a></td>
                 <td><?php if($post['Private']){echo '<i class="fas fa-lock"></i>';} ?><?= v($post['Title']); ?> </td>
                 <td><?= v($post['Category']); ?></td>
                 <td><?= v($post['Culture']); ?></td>
                 <td><?= v(FormatDate($post['Date'])); ?></td>
                 <td class="td-actions">
-                    <a style="color:white" href="/videos/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
+                    <a style="color:white" href="/text-post/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
                         Open
                     </a>
                 </td>

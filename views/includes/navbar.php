@@ -13,7 +13,7 @@
                     <li class="nav-item" id="homelink"><a class="nav-link" href="/home/">Home</a></li>
                     <li class="nav-item" id="videoslink"><a class="nav-link" href="/videos/">Videos</a></li>
                     <li class="nav-item" id="photoslink"><a class="nav-link" href="/photos/">Photos</a></li>
-                    <li class="nav-item" id="otherlink"><a class="nav-link" href="/other/">Other</a></li>
+                    <li class="nav-item" id="textlink"><a class="nav-link" href="/text-post/">Text Post</a></li>
                 </ul>
 
                 <?php

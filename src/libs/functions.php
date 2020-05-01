@@ -502,7 +502,7 @@ function PostType($pid)
     } else if ($type == "VP") {
         $t = "VideoPost";
     } else {
-        $t == "TextPost";
+        $t = "TextPost";
     }
     return $t;
 }
