@@ -256,7 +256,7 @@ $data = $user->fetch();
                                                 <td><?= v($post['Culture']); ?></td>
                                                 <td><?= v(FormatDate($post['Date'])); ?></td>
                                                 <td class="td-actions">
-                                                    <a style="color:white" href="/videos/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
+                                                    <a style="color:white" href="/text-post/<?= v($post['PostID']); ?>" title="Open" rel="tooltip" class="btn btn-info btn-sm">
                                                         Open
                                                     </a>
                                                 </td>

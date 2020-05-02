@@ -170,7 +170,8 @@ function IsAdmin($id)
 {
     $array = array(
         "116367054307199743956", // DriedSponge
-        "104684477093479828612"    // Jordan
+        "104684477093479828612" ,   // Jordan
+        "102888597507583127049" // Imen
     );
     if (in_array($id, $array)) {
         $admin = array(
