@@ -9,7 +9,8 @@ The website allowed users to:
 - Upload videos.
 - Upload/write text documents.
 - View others posts.
-It also had several moderation features including. 
+
+It also had several moderation features including:
 - Post deleting.
 - Account banning.
 - Live error reporting.
